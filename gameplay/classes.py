@@ -389,7 +389,6 @@ class Sniper(Character):
     def accurate_shot(self, enemy):
         damage = int(enemy.max_health / 100 * 30)
         enemy.health -= damage
-        extra_log
         self.mana -= self.cast_cost
         return self.name + " использует точный выстрел! \n" + \
                "-" + str(damage) + "🗡 " + '-' + str(self.cast_cost) + "🔷" + "\n"
