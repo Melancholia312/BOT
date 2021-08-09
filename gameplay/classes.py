@@ -53,7 +53,11 @@ class Character:
 
         calc_damage = self.attack
         if chance < self.crit_rate + self.luck // 3:
-            calc_damage = int(calc_damage * (chance / 50 + 1))
+            crit_bonus = (chance / 100 + 1.1)
+            if crit_bonus > 1.5:
+                crit_bonus = 1.5
+            calc_damage = int(calc_damage * crit_bonus)
+            
             atc_log += self.name + " наносит критический урон! " + "-" + str(calc_damage) + " \n"
 
         elif chance < 80 + self.luck:
@@ -220,7 +224,7 @@ class Paladin(Character):
 class Rubaka(Character):
 
     def execution(self, enemy):
-        calc_reduction = int(enemy.attack / 100 * 20)
+        calc_reduction = int(enemy.attack / 100 * 15)
         enemy.attack -= calc_reduction
         self.mana -= self.cast_cost
 
@@ -262,7 +266,7 @@ class Graduate(Character):
             self.mana_used = 0
 
     def __init__(self):
-        self.cast_cost = 70
+        self.cast_cost = 55
         self.active_ability = lambda one, e, f: self.fire(e)
         self.passive_ability = lambda: self.mana_sheld()
 
@@ -301,7 +305,7 @@ class Amateur(Character):
         self.mana += random.randint(hero_luck, hero_luck + 4)
 
     def __init__(self):
-        self.cast_cost = 55
+        self.cast_cost = 45
         self.active_ability = lambda one, e, f: self.fokus(e)
         self.passive_ability = lambda: self.mana_regen()
 
@@ -378,6 +382,7 @@ class Sniper(Character):
     def accurate_shot(self, enemy):
         damage = int(enemy.max_health / 100 * 30)
         enemy.health -= damage
+        extra_log
         self.mana -= self.cast_cost
         return self.name + " использует точный выстрел! \n" + \
                "-" + str(damage) + "🗡 " + '-' + str(self.cast_cost) + "🔷" + "\n"
