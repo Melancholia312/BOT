@@ -52,8 +52,8 @@ class Character:
         chance = random.randint(1, 100)
 
         calc_damage = self.attack
-        if chance < self.crit_rate + self.luck // 3:
-            crit_bonus = (chance / 100 + 1.1)
+        if chance < self.crit_rate + self.luck // 2:
+            crit_bonus = (chance / 100 + 1.2)
             if crit_bonus > 1.5:
                 crit_bonus = 1.5
             calc_damage = int(calc_damage * crit_bonus)
@@ -61,7 +61,14 @@ class Character:
             atc_log += self.name + " наносит критический урон! " + "-" + str(calc_damage) + " \n"
 
         elif chance < 80 + self.luck:
-            calc_damage -= int(calc_damage / 100 * chance)
+            
+            base_bonus = chance / 100 + 0.6
+            
+            if base_bonus > 1:
+                base_bonus = 1
+                
+            calc_damage -= int(calc_damage*base_bonus)
+            
             atc_log += self.name + " наносит " + str(calc_damage) + " единиц урона!" + " \n"
 
         elif chance < 90 + self.luck:
@@ -71,7 +78,7 @@ class Character:
         else:
             self.health -= calc_damage // 4
             atc_log += "Оружие выскальзывает из рук " + self.name + " и вонзается в ногу! -" + str(
-                calc_damage // 3) + " \n"
+                calc_damage // 4) + " \n"
             calc_damage = 0
 
         if chance % 17 == 0:
@@ -80,7 +87,7 @@ class Character:
                        '-' + str(calc_bad_effect) + " hp/sec" + "\n"
             enemy.bad_effect_hp += calc_bad_effect
 
-        calc_damage_armour = calc_damage - enemy.armour // 2
+        calc_damage_armour = calc_damage - enemy.armour * 2
         enemy.armour -= int(calc_damage * 0.15)
         calc_damage = calc_damage_armour
 
