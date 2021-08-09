@@ -71,7 +71,7 @@ class Monster:
             calc_damage = 0
             atc_log += self.name + " промахнулся" + "." + "\n"
 
-        calc_damage_armour = calc_damage - enemy.armour // 2
+        calc_damage_armour = calc_damage - enemy.armour * 2
         enemy.armour -= int(calc_damage * 0.15)
         calc_damage = calc_damage_armour
 
