@@ -1701,7 +1701,7 @@ def index(msg, user_id, peer_id):
 
             elif '/рейтинг уровень' in msg.lower():
                 space = '~~~~~~~~~~~~~' + "\n"
-                answer = 'Топ игроков по победам' + '\n' + space
+                answer = 'Топ игроков по уровню' + '\n' + space
                 list_with_top_users = get_top_user_by_lvl()
                 count = 0
                 for user in list_with_top_users:
@@ -1713,7 +1713,7 @@ def index(msg, user_id, peer_id):
 
             elif '/рейтинг количество крон' in msg.lower():
                 space = '~~~~~~~~~~~~~' + "\n"
-                answer = 'Топ игроков по победам' + '\n' + space
+                answer = 'Топ игроков по количеству крон' + '\n' + space
                 list_with_top_users = get_top_user_by_money()
                 count = 0
                 for user in list_with_top_users:
