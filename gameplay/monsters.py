@@ -40,7 +40,7 @@ class Monster:
     def attack_to(self, enemy):
         atc_log = ""  # self.name + " атакует " + enemy.name + "." + "\n"
         chance = random.randint(1, 100)
-        calc_damage = self.attack + self.luck//2
+        calc_damage = self.attack + self.luck//3
         attack_des = [" укусил ", " поцарапал ", " ударил "]
 
         if chance <= self.luck:
@@ -58,7 +58,7 @@ class Monster:
             if base_bonus > 1:
                 base_bonus = 1
                 
-            calc_damage -= int(calc_damage * base_bonus)
+            calc_damage = int(calc_damage * base_bonus)
             atc_log += self.name + attack_des[random.randint(0, len(attack_des) - 1)] + enemy.name + ". " + \
                        "-" + str(calc_damage) + "\n"
 
