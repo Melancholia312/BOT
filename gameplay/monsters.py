@@ -44,7 +44,12 @@ class Monster:
         attack_des = [" укусил ", " поцарапал ", " ударил "]
 
         if chance <= self.luck:
-            calc_damage = int(calc_damage * (chance / 10 + 1))
+            crit_bonus = chance / 10 + 1
+            
+            if crit_bonus > 1.5:
+                crit_bonus = 1.5
+                
+            calc_damage = int(calc_damage * crit_bonus)
             atc_log += self.name + " наносит критический урон! " + "-" + str(calc_damage) + "\n"
 
         elif chance < 75 + self.luck:
@@ -103,7 +108,7 @@ def generate_contract(hero_lvl, monster_inf, group=True):
 
         return [new_monster]
     steck_size = 1
-    monster_lvl = abs(hero_lvl - monster_inf["tier"])
+    monster_lvl = hero_lvl - monster_inf["tier"]
     if monster_lvl > 13:
         steck_size = 5
     elif monster_lvl > 8:
