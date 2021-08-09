@@ -1286,9 +1286,13 @@ def index(msg, user_id, peer_id):
             elif clear_msg(msg, 'отдых'):
                 if not check_sleep(user_id):
                     if not in_expedition(user_id):
-                        go_to_sleep(user_id)
-                        answer = 'Ваш персонаж пошел отдыхать. Он будет готов вновь отправиться в бой через 3 часа'
-                        send_message(peer_id=peer_id, text=answer)
+                        if not is_working(user_id):
+                            go_to_sleep(user_id)
+                            answer = 'Ваш персонаж пошел отдыхать. Он будет готов вновь отправиться в бой через 3 часа'
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = "Ваш персонаж работает"
+                            send_message(peer_id=peer_id, text=answer)
                     else:
                         answer = "Ваш персонаж находится в экспедиции"
                         send_message(peer_id=peer_id, text=answer)
