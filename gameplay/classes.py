@@ -67,7 +67,7 @@ class Character:
             if base_bonus > 1:
                 base_bonus = 1
                 
-            calc_damage -= int(calc_damage*base_bonus)
+            calc_damage = int(calc_damage*base_bonus)
             
             atc_log += self.name + " наносит " + str(calc_damage) + " единиц урона!" + " \n"
 
