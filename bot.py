@@ -1108,7 +1108,7 @@ def show_user_treasures(treasures):
 
 def index(msg, user_id, peer_id):
 
-    if msg == '/регистрация' and not is_exists(user_id):
+    if msg.lower() == '/регистрация' and not is_exists(user_id):
         try:
             text_for_buttons = []
             for hero_class in get_classes_name('all'):
