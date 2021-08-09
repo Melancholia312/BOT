@@ -53,7 +53,12 @@ class Monster:
             atc_log += self.name + " наносит критический урон! " + "-" + str(calc_damage) + "\n"
 
         elif chance < 75 + self.luck:
-            calc_damage -= int(calc_damage / 100 * chance)
+            base_bonus = chance / 100 + 0.4
+            
+            if base_bonus > 1:
+                base_bonus = 1
+                
+            calc_damage -= int(calc_damage * base_bonus)
             atc_log += self.name + attack_des[random.randint(0, len(attack_des) - 1)] + enemy.name + ". " + \
                        "-" + str(calc_damage) + "\n"
 
