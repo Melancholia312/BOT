@@ -173,7 +173,7 @@ def monster_fight(player, monsters, peer_id, user_id, contract=False):
     alive = True
     if player.health > 0:
         log += player.name+" побеждает!"+"\n"
-        exp = monsters[0].tier*len(monsters)*2
+        exp = monsters[0].tier*len(monsters)
         money = int(monsters[0].reward * player.money_bonus)
         if contract:
             complete_contract(peer_id, monsters[0].name)
