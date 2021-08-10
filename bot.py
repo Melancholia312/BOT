@@ -1654,7 +1654,7 @@ def index(msg, user_id, peer_id):
                 text_for_buttons = shop_info['text_for_buttons']
                 answer = shop_info['show_case']
                 user_money = get_hero_info(user_id)['money']
-                if user_money >= 100:
+                if user_money >= 500:
                     add_money(user_id, -500)
                     if text_for_buttons:
                         send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
