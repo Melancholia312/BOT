@@ -53,7 +53,7 @@ class Monster:
             atc_log += self.name + " наносит критический урон! " + "-" + str(calc_damage) + "\n"
 
         elif chance < 75 + self.luck:
-            base_bonus = chance / 100 + 0.2
+            base_bonus = chance / 100 + 0.5
             
             if base_bonus > 1:
                 base_bonus = 1
