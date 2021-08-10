@@ -1143,7 +1143,7 @@ def index(msg, user_id, peer_id):
 
             elif clear_msg(msg, 'меню'):
                 text_for_buttons = ['/мой персонаж', '/магазин', '/аукцион',
-                                    '/данж', '/контракты', '/рыбалка', '/таверна', '/рейтинг', '/реферальная система']
+                                    '/данж', '/контракты', '/рыбалка', '/таверна', '/скачки', '/рейтинг', '/реферальная система']
                 answer = 'Меню'
                 send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
 
