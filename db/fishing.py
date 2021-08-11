@@ -62,11 +62,11 @@ def reset_fish_time(user_id):
             if time_from_db != None:
                 delta = datetime.now() - time_from_db
                 if delta.days >= 1:
-                    cursor.execute(f"UPDATE users SET fish_time='{now}', fish_count={5} "
+                    cursor.execute(f"UPDATE users SET fish_time='{now}', fish_count={3} "
                                    f"WHERE user_id={user_id} ")
                     connect.commit()
             else:
-                cursor.execute(f"UPDATE users SET fish_time='{now}', fish_count={5} "
+                cursor.execute(f"UPDATE users SET fish_time='{now}', fish_count={3} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
 
