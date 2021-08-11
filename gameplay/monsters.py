@@ -31,7 +31,7 @@ class Monster:
         self.tier = inf["tier"]
         self.reward = inf["reward_money"]
         self.lvl = self.tier
-        self.max_armour = self.armour #t
+        self.max_armour = self.armour
 
     def diversity(self):
         self.health += random.randint(-2, 2) * self.tier
@@ -53,7 +53,7 @@ class Monster:
             atc_log += self.name + " наносит критический урон! " + "-" + str(calc_damage) + "\n"
 
         elif chance < 75 + self.luck:
-            base_bonus = chance / 100 + 0.5
+            base_bonus = chance / 100 + 0.2
             
             if base_bonus > 1:
                 base_bonus = 1
