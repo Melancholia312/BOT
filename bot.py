@@ -1752,7 +1752,7 @@ def index(msg, user_id, peer_id):
                     answer = 'Скачки доступны только в беседах'
                     send_message(peer_id=peer_id, text=answer)
 
-            elif '/скачки ставка' in msg:
+            elif '/скачки ставка' in msg.lower():
                 if user_id != peer_id:
                     racers = ['летающая капуста', 'волк одиночка',  'ездовой ящер']
                     try:
