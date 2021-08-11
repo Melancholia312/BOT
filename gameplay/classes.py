@@ -62,7 +62,7 @@ class Character:
 
         elif chance < 80 + self.luck:
             
-            base_bonus = chance / 100 + 0.6
+            base_bonus = chance / 100 + 0.2
             
             if base_bonus > 1:
                 base_bonus = 1
