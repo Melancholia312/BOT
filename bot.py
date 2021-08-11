@@ -435,7 +435,7 @@ def dange_stage_event(user_id, stage):
                str(drop_money) + ' Крон' + '\n'
         send_message(peer_id=user_id, text=log)
 
-    elif chance < 40 - player_stats['luck'] and stage % 4 == 0:
+    elif chance < 40 - player_stats['luck'] and stage % 3 == 0:
         log += player_name + ': ' + 'Это ловушка!' + "\n"
         save_chance = random.randint(1, 100)
         if save_chance < 60 - player_stats['luck']:
@@ -446,7 +446,7 @@ def dange_stage_event(user_id, stage):
             alive = False
         send_message(peer_id=user_id, text=log)
 
-    elif stage % 4 == 0 and chance < 65 - player_stats['luck']:
+    elif stage % 3 == 0 and chance < 65 - player_stats['luck']:
         change_dange_floor(user_id)
         log += player_name + ': ' + 'Это место кажется мне знакомым...' + "\n"
         send_message(peer_id=user_id, text=log)
