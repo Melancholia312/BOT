@@ -921,7 +921,11 @@ def show_fishing(user_id):
             text_for_buttons.append('/начать рыбалку')
             show_case += f'У вас есть удочка и вы можете рыбачить. Стоить это будет 1 энергию. Количество ваших попыток на сегодня - {fishing_info["fish_count"]}'
         else:
-            show_case += 'Сегодня вы нарыбачились сполна'
+            user_fish_time = fishing_info['fish_time']
+            delta = user_fish_time - datetime.datetime.now()
+            seconds = delta.seconds
+            remaining_time = strftime("%H:%M", gmtime(seconds))
+            show_case += f'Сегодня вы нарыбачились сполна. Рыбалка будет доступна через {remaining_time}'
 
     else:
         text_for_buttons.append('/приобрести удочку')
