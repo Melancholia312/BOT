@@ -2040,8 +2040,8 @@ def index(msg, user_id, peer_id):
 
             elif '/перевести кроны' in msg.lower():
                 try:
-                    recipient = int(msg.split('/перевести кроны')[1].split('|')[0].strip()[3:])
-                    value = int(msg.split('/перевести кроны')[1].split('-')[-1].strip())
+                    recipient = int(msg.lower().split('/перевести кроны')[1].split('|')[0].strip()[3:])
+                    value = int(msg.lower().split('/перевести кроны')[1].split('-')[-1].strip())
                 except:
                     recipient = None
                     value = None
