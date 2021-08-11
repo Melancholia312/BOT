@@ -1552,8 +1552,8 @@ def index(msg, user_id, peer_id):
                 item_names = []
                 for item in get_user_inventory(user_id, False):
                     item_names.append(item['name'].lower())
-                if msg.split('/надеть')[1].lower()[1:] in item_names:
-                    item_name = msg.split('/надеть')[1].lower()[1:]
+                if msg.lower().split('/надеть')[1][1:] in item_names:
+                    item_name = msg.lower().split('/надеть')[1][1:]
                     if check_item_class(user_id, item_name):
                         if already_equip_or_not(user_id, item_name):
                             equip_item(user_id, item_name)
@@ -1573,8 +1573,8 @@ def index(msg, user_id, peer_id):
                 item_names = []
                 for item in get_user_inventory(user_id, False):
                     item_names.append(item['name'].lower())
-                if msg.split('/снять')[1].lower()[1:] in item_names:
-                    item_name = msg.split('/снять')[1].lower()[1:]
+                if msg.lower().split('/снять')[1][1:] in item_names:
+                    item_name = msg.lower().split('/снять')[1][1:]
                     if not already_equip_or_not(user_id, item_name):
                         equip_item(user_id, item_name, False)
                         answer = f'Вы успешно сняли {item_name.title()}'
@@ -1590,8 +1590,8 @@ def index(msg, user_id, peer_id):
                 item_names = []
                 for item in get_user_inventory(user_id, False):
                     item_names.append(item['name'].lower())
-                if msg.split('/выкинуть')[1].lower()[1:] in item_names:
-                    item_name = msg.split('/выкинуть')[1].lower()[1:]
+                if msg.lower().split('/выкинуть')[1][1:] in item_names:
+                    item_name = msg.lower().split('/выкинуть')[1][1:]
                     if drop_item(user_id, item_name):
                         answer = f'Вы выкинули {item_name.title()}'
                         send_message(peer_id=peer_id, text=answer)
@@ -1608,7 +1608,7 @@ def index(msg, user_id, peer_id):
                     for item in get_user_inventory(user_id, False):
                         item_names.append(item['name'].lower())
                     try:
-                        item_info = msg.split('/продать')[1].lower().strip().split('-')
+                        item_info = msg.lower().split('/продать')[1].lower().strip().split('-')
                         item_name = item_info[0][:-1]
                         item_cost = int(item_info[1])
                         if item_cost > 10000000:
@@ -1757,7 +1757,7 @@ def index(msg, user_id, peer_id):
                     racers = ['летающая капуста', 'волк одиночка',  'ездовой ящер']
                     try:
                         bet = int(msg.lower().split('/скачки ставка')[1].split('-')[1].strip())
-                        racer_name = msg.lower().split('/скачки ставка')[1].split('-')[0].strip().lower()
+                        racer_name = msg.lower().split('/скачки ставка')[1].split('-')[0].strip()
                     except:
                         bet = 0
                         racer_name = None
