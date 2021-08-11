@@ -97,6 +97,7 @@ def old_carriage(user_id):
                     hero_exp += 2
                     answer += f'- {hero_name} успел сбежать. Всё закончилось хорошо.' + '\n' +\
                               '+ 2 опыт' + '\n\n' + '~~~\n'
+                    return answer
                 else:
                     wolf_nums_fight = [1,2,3]
                     wolf_num_fight = random.choice(wolf_nums_fight)
