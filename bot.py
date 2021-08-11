@@ -1756,8 +1756,8 @@ def index(msg, user_id, peer_id):
                 if user_id != peer_id:
                     racers = ['летающая капуста', 'волк одиночка',  'ездовой ящер']
                     try:
-                        bet = int(msg.split('/скачки ставка')[1].split('-')[1].strip())
-                        racer_name = msg.split('/скачки ставка')[1].split('-')[0].strip().lower()
+                        bet = int(msg.lower().split('/скачки ставка')[1].split('-')[1].strip())
+                        racer_name = msg.lower().split('/скачки ставка')[1].split('-')[0].strip().lower()
                     except:
                         bet = 0
                         racer_name = None
