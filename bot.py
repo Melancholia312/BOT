@@ -1136,7 +1136,7 @@ def index(msg, user_id, peer_id):
             user_register(msg, user_id)
 
         elif check_dange_floor(user_id) > 0:
-            dange_gameplay(msg, user_id, peer_id           
+            dange_gameplay(msg, user_id, peer_id)           
     
         elif '/' in msg:
 
