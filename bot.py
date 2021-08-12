@@ -2251,11 +2251,15 @@ def index(msg, user_id, peer_id):
                 else:
                     answer = 'Вы не на работе'
                     send_message(peer_id=peer_id, text=answer)
+                           
+            elif clear_msg(msg, 'регистрация'):     
+                answer = 'Вы уже зарегистрированы!'
+                send_message(peer_id=peer_id, text=answer)           
 
     elif not is_exists(user_id) and '/' in msg:
         answer = 'Вы не зарегистрированны!'
         send_message(peer_id=peer_id, text=answer)
-
+    
     if new_lvl(user_id):
         answer = f'Поздравляю, вы достигли {lvl_up(user_id)} уровень!'
         send_message(peer_id=peer_id, text=answer)
