@@ -1112,7 +1112,7 @@ def show_user_treasures(treasures):
 
 def index(msg, user_id, peer_id):
 
-    if msg.lower() == '/регистрация' and not is_exists(user_id):
+    if clear_msg(msg, 'регистрация') and not is_exists(user_id):
         try:
             text_for_buttons = []
             for hero_class in get_classes_name('all'):
@@ -1123,7 +1123,7 @@ def index(msg, user_id, peer_id):
         except:
             send_message(peer_id=peer_id, text="Для регистрации нужно написать боту в личные сообщения "
                                                   "- https://vk.com/club203434371")
-    elif msg.lower() == '/помощь':
+    elif clear_msg(msg, 'помощь'):
                 space = "\n" + '~~~~~~~~~~~~~' + "\n"
                 answer = "Полезные ссылки" + space + '📚Краткое руководство:' + '\n' +  'https://vk.com/topic-203434371_48149392' + '\n' + '🎯Советы для новых игроков:' + '\n' + 'https://vk.com/topic-203434371_48174280' + '\n' + \
                          '☎Исправление багов:' + '\n' +  'https://vk.com/topic-203434371_47471775' + \
