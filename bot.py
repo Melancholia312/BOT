@@ -1123,22 +1123,21 @@ def index(msg, user_id, peer_id):
         except:
             send_message(peer_id=peer_id, text="Для регистрации нужно написать боту в личные сообщения "
                                                   "- https://vk.com/club203434371")
-
+    elif msg.lower() == '/помощь':
+                space = "\n" + '~~~~~~~~~~~~~' + "\n"
+                answer = "Полезные ссылки" + space + '📚Краткое руководство:' + '\n' +  'https://vk.com/topic-203434371_48149392' + '\n' + '🎯Советы для новых игроков:' + '\n' + 'https://vk.com/topic-203434371_48174280' + '\n' + \
+                         '☎Исправление багов:' + '\n' +  'https://vk.com/topic-203434371_47471775' + \
+                         '\n' + '\n' + 'По важным вопросам писать:' + '\n' + '🍰 [id276221064|@melancholia312]' + space
+                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text=['/меню', '/помощь'], inline=False))
+    
     elif is_exists(user_id):
         
         if get_user_flag(user_id)['flag'] != 5:
             user_register(msg, user_id)
 
         elif check_dange_floor(user_id) > 0:
-            dange_gameplay(msg, user_id, peer_id)
-           
-        elif clear_msg(msg, 'помощь'):
-                space = "\n" + '~~~~~~~~~~~~~' + "\n"
-                answer = "Полезные ссылки" + space + '📚Краткое руководство:' + '\n' +  'https://vk.com/topic-203434371_48149392' + '\n' + '🎯Советы для новых игроков:' + '\n' + 'https://vk.com/topic-203434371_48174280' + '\n' + \
-                         '☎Исправление багов:' + '\n' +  'https://vk.com/topic-203434371_47471775' + \
-                         '\n' + '\n' + 'По важным вопросам писать:' + '\n' + '🍰 [id276221064|@melancholia312]' + space
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text=['/меню', '/помощь'], inline=False))
-
+            dange_gameplay(msg, user_id, peer_id           
+    
         elif '/' in msg:
 
             if clear_msg(msg, 'точно удалить персонажа'):
