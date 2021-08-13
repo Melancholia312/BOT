@@ -2137,15 +2137,15 @@ def index(msg, user_id, peer_id):
 
             elif clear_msg(msg, 'начать рыбалку'):
                 if get_fishing_info(user_id)['fish_rod'] == 1:
-                    if check_energy(user_id, 1):
-                        if check_fish_try(user_id):
+                    if check_fish_try(user_id):
+                        if check_energy(user_id, 1):
                             fishing(user_id, peer_id)
                             spend_fish_count(user_id)
-                        else:
-                            answer = 'Думаю, на сегодня хватит рыбалки'
+                        else:                    
+                            answer = 'У вас недостаточно энергии'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'У вас недостаточно энергии'
+                        answer = 'Думаю, на сегодня хватит рыбалки'
                         send_message(peer_id=peer_id, text=answer)
                 else:
                     answer = 'У вас нет удочки'
