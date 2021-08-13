@@ -1386,8 +1386,12 @@ def index(msg, user_id, peer_id):
 
                 if treausre_name:
                     if check_treasure_quantity(user_id, treasures_numbers[treausre_name]):
-                        answer = open_treasure(user_id, treasures_numbers[treausre_name])
-                        send_message(peer_id=peer_id, text=answer)
+                        if check_full_inventory(user_id):
+                            answer = open_treasure(user_id, treasures_numbers[treausre_name])
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'У вас нет места в инвентаре'
+                            send_message(peer_id=peer_id, text=answer)    
                     else:
                         answer = 'У вас нет этой сокровищницы'
                         send_message(peer_id=peer_id, text=answer)
