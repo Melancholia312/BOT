@@ -1971,54 +1971,50 @@ def index(msg, user_id, peer_id):
                     send_message(peer_id=peer_id, text=answer)
 
             elif '/напасть' in msg.lower():
-                if check_busy_contract(user_id) == 0:
-                    if not check_sleep(user_id):
-                        if is_alive(user_id):
-                            if not in_expedition(user_id):
-                                if not is_working(user_id):
+                if not check_sleep(user_id):
+                    if is_alive(user_id):
+                        if not in_expedition(user_id):
+                            if not is_working(user_id):
+                                list_with_monsters = get_conversation_contracts(peer_id)
+                                monsters_name = []
+                                for monster in list_with_monsters:
+                                    monsters_name.append(monster['name'].lower())
+
+                                target_name = msg.split('/напасть')[1].lower()[1:]
+
+                                if target_name in monsters_name:
                                     if check_energy(user_id, 3):
-                                      
-                                        list_with_monsters = get_conversation_contracts(peer_id)
-                                        monsters_name = []
-                                        for monster in list_with_monsters:
-                                            monsters_name.append(monster['name'].lower())
-
-                                        target_name = msg.split('/напасть')[1].lower()[1:]
-
-                                        if target_name in monsters_name:
-                                            set_busy_contract(user_id, True)                                                        
-                                            player_inf = get_stats(user_id)
-                                            player_mult = get_stat_multiply(player_inf["class"])
-
-                                            player = create_class(get_subclasses_name(user_id, False))
-                                            player.get_state(player_inf, player_mult)
-
-                                            monster_inf = get_monsters(target_name, False)
-
-                                            monsters = generate_contract(player.lvl, monster_inf)
-
-                                            alive = monster_fight(player, monsters, peer_id, user_id, contract=True)
-                                            searching_monster(user_id, False)
-                                            set_busy_contract(user_id, False)
-
-                                        else:
-                                            answer = "Такого заказа не существует или же он вам не доступен"
-                                            send_message(peer_id=peer_id, text=answer)
+                                        player_inf = get_stats(user_id)
+                                        player_mult = get_stat_multiply(player_inf["class"])
+    
+                                        player = create_class(get_subclasses_name(user_id, False))
+                                        player.get_state(player_inf, player_mult)
+    
+                                        monster_inf = get_monsters(target_name, False)
+    
+                                        monsters = generate_contract(player.lvl, monster_inf)
+    
+                                        alive = monster_fight(player, monsters, peer_id, user_id, contract=True)
+                                        searching_monster(user_id, False)
                                     else:
                                         answer = f'У вас не хватает энергии!'
                                         send_message(peer_id=peer_id, text=answer)
                                 else:
-                                    answer = "Ваш персонаж работает"
+                                    answer = "Такого заказа не существует или же он вам не доступен"
                                     send_message(peer_id=peer_id, text=answer)
+                                
                             else:
-                                answer = "Ваш персонаж находится в экспедиции"
+                                answer = "Ваш персонаж работает"
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'Ваш персонаж мертв!'
+                            answer = "Ваш персонаж находится в экспедиции"
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Ваш персонаж отдыхает!'
+                        answer = 'Ваш персонаж мертв!'
                         send_message(peer_id=peer_id, text=answer)
+                else:
+                    answer = 'Ваш персонаж отдыхает!'
+                    send_message(peer_id=peer_id, text=answer)
 
             elif clear_msg(msg, 'экспедиция'):
                 answer = 'Поход в экспедицию стоит 3 энергии. Вы уверены?'
