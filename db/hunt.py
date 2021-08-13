@@ -143,3 +143,30 @@ def complete_contract(peer_id, monster_name):
             connect.commit()
     finally:
         connect.close()
+        
+        
+def set_busy_contract(user_id, busy):
+    connect = get_connect()
+    try:
+        with connect.cursor() as cursor:
+            if busy:
+                cursor.execute(f"UPDATE users SET contract_busy={1} "
+                               f"WHERE user_id={user_id}")
+                connect.commit()
+            else:
+                cursor.execute(f"UPDATE users SET contract_busy={0} "
+                               f"WHERE user_id={user_id}")
+                connect.commit()
+    finally:
+        connect.close()
+
+
+def check_busy_contract(user_id):
+    connect = get_connect()
+    try:
+        with connect.cursor() as cursor:
+            cursor.execute(f"SELECT contract_busy FROM users "
+                           f"WHERE user_id={user_id} ")
+            return cursor.fetchone()['contract_busy']
+    finally:
+        connect.close()
