@@ -809,6 +809,7 @@ def show_magazine(user_id):
         show_case += str(item['items.id']) + ' - ' + item['name'] + ' - ' + f'{str(item["cost"])} крон' + '\n'
         text_for_buttons.append(f'/{item["name"]}')
     text_for_buttons.append('/обновить магазин')
+    show_case += space + '⚠ Обновление магазина стоит 500 крон!'
     return {'show_case': show_case, 'text_for_buttons': text_for_buttons}
 
 
