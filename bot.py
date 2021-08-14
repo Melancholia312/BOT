@@ -2266,16 +2266,12 @@ def index(msg, user_id, peer_id):
 
                     if recipient:
                         if is_exists(recipient):
-                            if user_id != recipient:
-                                if value:
-                                    add_money(recipient, value)
-                                    answer = f'Вы успешно пополнили счет игрока @id{recipient} на {value} крон'
-                                    send_message(peer_id=peer_id, text=answer)
-                                else:
-                                    answer = 'Укажите валидное число крон!'
-                                    send_message(peer_id=peer_id, text=answer)
+                            if value:
+                                add_money(recipient, value)
+                                answer = f'Вы успешно пополнили счет игрока @id{recipient} на {value} крон'
+                                send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Какой прок от этого?...'
+                                answer = 'Укажите валидное число крон!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
                             answer = 'Такого игрока не существует'
@@ -2295,16 +2291,12 @@ def index(msg, user_id, peer_id):
 
                     if recipient:
                         if is_exists(recipient):
-                            if user_id != recipient:
-                                if value:
-                                    add_energy(recipient, value)
-                                    answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value}'
-                                    send_message(peer_id=peer_id, text=answer)
-                                else:
-                                    answer = 'Укажите валидное число энергии!'
-                                    send_message(peer_id=peer_id, text=answer)
+                            if value:
+                                add_energy(recipient, value)
+                                answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value}'
+                                send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Какой прок от этого?...'
+                                answer = 'Укажите валидное число энергии!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
                             answer = 'Такого игрока не существует'
@@ -2324,16 +2316,12 @@ def index(msg, user_id, peer_id):
                     
                     if recipient:
                         if is_exists(recipient):
-                            if user_id != recipient:
-                                if treasure_num in [1, 2, 3, 4, 5]:
-                                    give_treasure(recipient, treasure_num)
-                                    answer = f'Вы успешно дали игроку @id{recipient} сундук!'
-                                    send_message(peer_id=peer_id, text=answer)
-                                else:
-                                    answer = 'Такого сундука не существует!'
-                                    send_message(peer_id=peer_id, text=answer)
+                            if treasure_num in [1, 2, 3, 4, 5]:
+                                give_treasure(recipient, treasure_num)
+                                answer = f'Вы успешно дали игроку @id{recipient} сундук!'
+                                send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Какой прок от этого?...'
+                                answer = 'Такого сундука не существует!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
                             answer = 'Такого игрока не существует'
