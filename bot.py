@@ -1860,7 +1860,7 @@ def index(msg, user_id, peer_id):
                     if enemy_id:
                         if is_exists(enemy_id):
                             if not check_enemy_id(user_id):
-                                if not find_enemy(user_id):
+                                if not check_enemy_id(enemy_id):
                                     if enemy_id != user_id:
                                         if not check_sleep(user_id):
                                             if is_alive(enemy_id):
@@ -1893,7 +1893,7 @@ def index(msg, user_id, peer_id):
                                     answer = 'Вы уже учавствуете в дуэли!'
                                     send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Вы уже учавствуете в дуэли!'
+                                answer = 'Вы уже вызвали кого-то на дуэль!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
                             answer = 'Данного пользователя не существует'
