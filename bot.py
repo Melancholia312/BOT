@@ -1859,7 +1859,7 @@ def index(msg, user_id, peer_id):
 
                     if enemy_id:
                         if is_exists(enemy_id):
-                            if not check_enemy_id(user_id) and not find_enemy(user_id):
+                            if (not check_enemy_id(user_id)) and (not find_enemy(user_id)):
                                 if enemy_id != user_id:
                                     if not check_sleep(user_id):
                                         if is_alive(enemy_id):
