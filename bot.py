@@ -1,4 +1,4 @@
-вimport math
+import math
 import requests
 import vk_api
 from datetime import datetime
