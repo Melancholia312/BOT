@@ -7,8 +7,6 @@ def choose_enemy(user_id, enemy_id):
         with connect.cursor() as cursor:
             cursor.execute(f"UPDATE users SET enemy_id={enemy_id} "
                            f"WHERE user_id={user_id}")
-            cursor.execute(f"UPDATE users SET enemy_id={user_id} "
-                           f"WHERE user_id={enemy_id}")
             connect.commit()
     finally:
         connect.close()
