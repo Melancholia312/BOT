@@ -118,6 +118,11 @@ def open_treasure(user_id, treasure_number):
                     return 'Вы открыли Зачарованный сундук и получили: ' + '\n' + f'+{earn_money} крон' + '\n' + f'+{earn_exp} опыта' + '\n' + f'+ {new_item_name}'
 
                 else:
+                    cursor.execute(f'UPDATE users SET money={user_money + earn_money}, '
+                                   f'exp={user_exp + earn_exp}, '
+                                   f'{treasure}={user_treasure} '
+                                   f'WHERE user_id={user_id}')
+                    connect.commit()
                     return 'Вы открыли Зачарованный сундук и получили: ' + '\n' + f'+{earn_money} крон' + '\n' + f'+{earn_exp} опыта'
 
             elif treasure_number == 3:
