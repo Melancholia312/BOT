@@ -1,4 +1,4 @@
-import math
+вimport math
 import requests
 import vk_api
 from datetime import datetime
@@ -2326,7 +2326,7 @@ def index(msg, user_id, peer_id):
                         if is_exists(recipient):
                             if user_id != recipient:
                                 if treasure_num in [1, 2, 3, 4, 5]:
-                                    give_treasure(user_id, treasure_num)
+                                    give_treasure(recipient, treasure_num)
                                     answer = f'Вы успешно дали игроку @id{recipient} сундук!'
                                     send_message(peer_id=peer_id, text=answer)
                                 else:
