@@ -26,6 +26,7 @@ from db.fishing import *
 from db.work import *
 from db.revaral_system import *
 from db.treasures import *
+from db.admin import *
 from gameplay.monsters import *
 from gameplay.classes import *
 
@@ -1496,7 +1497,7 @@ def index(msg, user_id, peer_id):
 
             elif '/выкупить' in msg.lower():
                 try:
-                    auction_id = int(msg.split('/выкупить')[1][1:])
+                    auction_id = int(msg.lower().split('/выкупить')[1].strip())
                 except:
                     auction_id = None
 
@@ -1675,7 +1676,7 @@ def index(msg, user_id, peer_id):
 
             elif '/купить' in msg.lower():
                 try:
-                    item_id = int(msg.split('/купить')[1][1:])
+                    item_id = int(msg.lower().split('/купить')[1].strip())
                 except:
                     item_id = None
 
@@ -2250,7 +2251,100 @@ def index(msg, user_id, peer_id):
                            
             elif clear_msg(msg, 'регистрация'):     
                 answer = 'Вы уже зарегистрированы!'
-                send_message(peer_id=peer_id, text=answer)           
+                send_message(peer_id=peer_id, text=answer)    
+            
+                        elif is_admin(user_id):
+
+                if '/пополнить баланс' in msg.lower():
+
+                    try:
+                        recipient = int(msg.split('/пополнить')[1].split('|')[0].strip()[3:])
+                        value = int(msg.split('/пополнить')[1].split('-')[-1].strip())
+                    except:
+                        recipient = None
+                        value = None
+
+                    if recipient:
+                        if is_exists(recipient):
+                            if user_id != recipient:
+                                if value:
+                                    add_money(recipient, value)
+                                    answer = f'Вы успешно пополнили счет игрока @id{recipient} на {value} крон'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Укажите валидное число крон!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Какой прок от этого?...'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Такого игрока не существует'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/добавить энергии' in msg.lower():
+
+                    try:
+                        recipient = int(msg.split('/добавить энергии')[1].split('|')[0].strip()[3:])
+                        value = int(msg.split('/добавить энергии')[1].split('-')[-1].strip())
+                    except:
+                        recipient = None
+                        value = None
+
+                    if recipient:
+                        if is_exists(recipient):
+                            if user_id != recipient:
+                                if value:
+                                    add_energy(recipient, value)
+                                    answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value} крон'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Укажите валидное число энергии!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Какой прок от этого?...'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Такого игрока не существует'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/вручить сундук' in msg.lower():
+                    
+                    try:
+                        recipient = int(msg.split('/вручить сундук')[1].split('|')[0].strip()[3:])
+                        treasure_num = int(msg.split('/вручить сундук')[1].split('-')[-1].strip())
+                    except:
+                        recipient = None
+                        treasure_num = None
+                    
+                    if recipient:
+                        if is_exists(recipient):
+                            if user_id != recipient:
+                                if treasure_num in [1, 2, 3, 4, 5]:
+                                    give_treasure(user_id, treasure_num)
+                                    answer = f'Вы успешно дали игроку @id{recipient} сундук!'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Такого сундука не существует!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Какой прок от этого?...'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Такого игрока не существует'
+                        send_message(peer_id=peer_id, text=answer)
+                    
+            else:
+                answer = 'Не суй свои ручонки :)'
+                send_message(peer_id=peer_id, text=answer)
 
     elif not is_exists(user_id) and '/' in msg:
         answer = 'Вы не зарегистрированны!'
