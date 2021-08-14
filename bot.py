@@ -2253,7 +2253,7 @@ def index(msg, user_id, peer_id):
                 answer = 'Вы уже зарегистрированы!'
                 send_message(peer_id=peer_id, text=answer)    
             
-            elif is_admin(user_id):
+            if is_admin(user_id):
 
                 if '/пополнить баланс' in msg.lower():
 
