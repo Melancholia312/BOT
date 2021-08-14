@@ -2298,7 +2298,7 @@ def index(msg, user_id, peer_id):
                             if user_id != recipient:
                                 if value:
                                     add_energy(recipient, value)
-                                    answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value} крон'
+                                    answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value}'
                                     send_message(peer_id=peer_id, text=answer)
                                 else:
                                     answer = 'Укажите валидное число энергии!'
