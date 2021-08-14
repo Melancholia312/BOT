@@ -1916,7 +1916,7 @@ def index(msg, user_id, peer_id):
                         if is_alive(user_id):
                             if not in_expedition(user_id):
                                 if not is_working(user_id):
-                                    answer = 'Данж | Вы уверены? Поход в данж будет стоить вам 5 единицам энергии'
+                                    answer = 'Данж | Вы уверены? Поход в данж будет стоить вам 7 единиц энергии'
                                     text_for_buttons = ['/точно зайти в данж']
                                     send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                                 else:
@@ -1938,7 +1938,7 @@ def index(msg, user_id, peer_id):
                         if is_alive(user_id):
                             if not in_expedition(user_id):
                                 if not is_working(user_id):
-                                    if check_energy(user_id, 5):
+                                    if check_energy(user_id, 7):
                                         enter_dange(user_id)
                                         answer = f'Вы зашли в данж! В какую дверь пройдете?'
                                         text_for_buttons = ['Левую', 'Центральную', 'Правую', '/выйти из данжа']
