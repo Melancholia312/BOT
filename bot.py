@@ -1812,12 +1812,8 @@ def index(msg, user_id, peer_id):
                             if is_alive(user_id):
                                 if not in_expedition(user_id):
                                     if not is_working(user_id):
-                                        if check_energy(user_id, 2):
-                                            pvp_fight(user_id, enemy_id, peer_id)
-                                            drop_enemy_id(user_id, enemy_id)
-                                        else:
-                                            answer = f'У вас не хватает энергии!'
-                                            send_message(peer_id=peer_id, text=answer)
+                                        pvp_fight(user_id, enemy_id, peer_id)
+                                        drop_enemy_id(user_id, enemy_id)
                                     else:
                                         answer = "Ваш персонаж работает"
                                         send_message(peer_id=peer_id, text=answer)
@@ -1869,14 +1865,10 @@ def index(msg, user_id, peer_id):
                                             if is_alive(user_id):
                                                 if not in_expedition(user_id):
                                                     if not is_working(user_id):
-                                                        if check_energy(user_id, 2):
-                                                            choose_enemy(user_id, enemy_id)
-                                                            answer = f'Вы бросили вызов игроку @id{enemy_id}'
-                                                            text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
-                                                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                                                        else:
-                                                            answer = f'У вас не хватает энергии!'
-                                                            send_message(peer_id=peer_id, text=answer)
+                                                        choose_enemy(user_id, enemy_id)
+                                                        answer = f'Вы бросили вызов игроку @id{enemy_id}'
+                                                        text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
+                                                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                                                     else:
                                                         answer = "Ваш персонаж работает"
                                                         send_message(peer_id=peer_id, text=answer)
