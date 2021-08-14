@@ -23,7 +23,7 @@ def find_enemy(user_id):
                 enemy_id = cursor.fetchone()['user_id']
                 return enemy_id
             else:
-                return None
+                return False
     finally:
         connect.close()
 
