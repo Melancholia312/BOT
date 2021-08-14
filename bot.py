@@ -1861,39 +1861,47 @@ def index(msg, user_id, peer_id):
                         if is_exists(enemy_id):
                             if not check_enemy_id(user_id):
                                 if not check_enemy_id(enemy_id):
-                                    if enemy_id != user_id:
-                                        if not check_sleep(user_id):
-                                            if is_alive(enemy_id):
-                                                if is_alive(user_id):
-                                                    if not in_expedition(user_id):
-                                                        if not is_working(user_id):
-                                                            choose_enemy(user_id, enemy_id)
-                                                            answer = f'Вы бросили вызов игроку @id{enemy_id}'
-                                                            text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
-                                                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                                    if not find_enemy(user_id):
+                                        if not find_enemy(enemy_id):
+                                            if enemy_id != user_id:
+                                                if not check_sleep(user_id):
+                                                    if is_alive(enemy_id):
+                                                        if is_alive(user_id):
+                                                            if not in_expedition(user_id):
+                                                                if not is_working(user_id):
+                                                                    choose_enemy(user_id, enemy_id)
+                                                                    answer = f'Вы бросили вызов игроку @id{enemy_id}'
+                                                                    text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
+                                                                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                                                                else:
+                                                                    answer = "Ваш персонаж работает"
+                                                                    send_message(peer_id=peer_id, text=answer)
+                                                            else:
+                                                                answer = "Ваш персонаж находится в экспедиции"
+                                                                send_message(peer_id=peer_id, text=answer)
                                                         else:
-                                                            answer = "Ваш персонаж работает"
+                                                            answer = 'Ваш персонаж мертв!'
                                                             send_message(peer_id=peer_id, text=answer)
                                                     else:
-                                                        answer = "Ваш персонаж находится в экспедиции"
+                                                        answer = 'Ты с трупом собрался сражаться?...'
                                                         send_message(peer_id=peer_id, text=answer)
                                                 else:
-                                                    answer = 'Ваш персонаж мертв!'
+                                                    answer = 'Ваш персонаж отдыхает!'
                                                     send_message(peer_id=peer_id, text=answer)
                                             else:
-                                                answer = 'Ты с трупом собрался сражаться?...'
+                                                answer = 'Ты больной?'
                                                 send_message(peer_id=peer_id, text=answer)
                                         else:
-                                            answer = 'Ваш персонаж отдыхает!'
-                                            send_message(peer_id=peer_id, text=answer)
+                                            answer = 'Ваш соперник уже участвует в дуэли!'
+                                            send_message(peer_id=peer_id, text=answer)        
                                     else:
-                                        answer = 'Ты больной?'
-                                        send_message(peer_id=peer_id, text=answer)
+                                        answer = 'Вы уже участвуете в дуэли!'
+                                        send_message(peer_id=peer_id, text=answer)            
                                 else:
-                                    answer = 'Вы уже учавствуете в дуэли!'
+                                    answer = 'Ваш соперник уже участвует в дуэли!'
                                     send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Вы уже вызвали кого-то на дуэль!'
+                                answer = 'Вы уже участвуете в дуэли!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
                             answer = 'Данного пользователя не существует'
