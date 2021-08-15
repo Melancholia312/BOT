@@ -1985,7 +1985,7 @@ def index(msg, user_id, peer_id):
                                 for monster in list_with_monsters:
                                     monsters_name.append(monster['name'].lower())
 
-                                target_name = msg.split('/напасть')[1].lower()[1:]
+                                target_name = msg.lower().split('/напасть')[1][1:]
 
                                 if target_name in monsters_name:
                                     if check_energy(user_id, 3):
