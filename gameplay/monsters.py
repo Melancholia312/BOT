@@ -114,11 +114,11 @@ def generate_contract(hero_lvl, monster_inf, group=True):
         return [new_monster]
     steck_size = 1
     monster_lvl = hero_lvl - monster_inf["tier"]
-    if monster_lvl > 13:
+    if monster_lvl > 22:
         steck_size = 5
-    elif monster_lvl > 8:
+    elif monster_lvl > 16:
         steck_size = 3 + random.randint(0, 1)
-    elif monster_lvl > 3:
+    elif monster_lvl > 8:
         steck_size = 2
 
     for i in range(steck_size):
