@@ -89,6 +89,8 @@ def old_carriage(user_id):
             money += earn_money
             answer = 'Вы наткнулись на разграбленную повозку. Интересно, чьих это рук дело ?' + '\n' + \
                      f'+{earn_money} Крон' + '\n\n' + '~~~\n'
+            cursor.execute(f"UPDATE users SET money={money} "
+                           f"WHERE user_id={user_id} ")
             if num_event == 1:
                 wolf_events = [1,2]
                 wolf_event = random.choice(wolf_events)
@@ -97,6 +99,8 @@ def old_carriage(user_id):
                     hero_exp += 2
                     answer += f'- {hero_name} успел сбежать. Всё закончилось хорошо.' + '\n' +\
                               '+ 2 опыт' + '\n\n' + '~~~\n'
+                    cursor.execute(f"UPDATE users SET exp={hero_exp} "
+                                   f"WHERE user_id={user_id} ")
                     return answer
                 else:
                     wolf_nums_fight = [1,2,3]
@@ -135,9 +139,10 @@ def old_carriage(user_id):
                 answer += f'Пройдя по следам, вы встретили {quantity_bandits} бандитов.' + '\n\n' + '~~~\n'
                 bandits_events = [1,2]
                 bandits_event = random.choice(bandits_events)
-                bandits_money = random.randint(50, 300)
-                money += bandits_money
+                
                 if bandits_event == 1:
+                    bandits_money = random.randint(50, 125)
+                    money += bandits_money
                     answer += 'Вы не смогли найти общий язык с головорезами и пришлось их перебить.' + '\n' + \
                               f'+ {bandits_money} монет.' + '\n\n' + '~~~\n'
                     cursor.execute(f"UPDATE users SET money={money} "
