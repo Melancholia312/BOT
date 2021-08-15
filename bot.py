@@ -1113,708 +1113,810 @@ def show_user_treasures(treasures):
     return {'answer': show_case, 'text_for_buttons': text_for_buttons}
 
 def index(msg, user_id, peer_id):
-
-    if clear_msg(msg, 'регистрация') and not is_exists(user_id):
-        try:
+    
+    try:
+        if clear_msg(msg, 'регистрация') and not is_exists(user_id):
             text_for_buttons = []
             for hero_class in get_classes_name('all'):
                 text_for_buttons.append(hero_class)
             send_message(peer_id=user_id, text=f"Выбери свой класс", keyboard=create_keyboard(text_for_buttons))
             register(user_id)
             set_flag(user_id, 1)
-        except:
-            send_message(peer_id=peer_id, text="Для регистрации нужно написать боту в личные сообщения "
-                                                  "- https://vk.com/club203434371")
-    elif clear_msg(msg, 'помощь'):
-                space = "\n" + '~~~~~~~~~~~~~' + "\n"
-                answer = "Полезные ссылки" + space + '📚Краткое руководство:' + '\n' +  'https://vk.com/topic-203434371_48149392' + '\n' + '🎯Советы для новых игроков:' + '\n' + 'https://vk.com/topic-203434371_48174280' + '\n' + \
-                         '☎Исправление багов:' + '\n' +  'https://vk.com/topic-203434371_47471775' + \
-                         '\n' + '\n' + 'По важным вопросам писать:' + '\n' + '🍰 [id276221064|@melancholia312]' + space
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text=['/меню', '/помощь'], inline=False))
-    
-    elif is_exists(user_id):
-        
-        if get_user_flag(user_id)['flag'] != 5:
-            user_register(msg, user_id)
 
-        elif check_dange_floor(user_id) > 0:
-            dange_gameplay(msg, user_id, peer_id)           
-    
-        elif '/' in msg:
+        elif clear_msg(msg, 'помощь'):
+                    space = "\n" + '~~~~~~~~~~~~~' + "\n"
+                    answer = "Полезные ссылки" + space + '📚Краткое руководство:' + '\n' +  'https://vk.com/topic-203434371_48149392' + '\n' + '🎯Советы для новых игроков:' + '\n' + 'https://vk.com/topic-203434371_48174280' + '\n' + \
+                             '☎Исправление багов:' + '\n' +  'https://vk.com/topic-203434371_47471775' + \
+                             '\n' + '\n' + 'По важным вопросам писать:' + '\n' + '🍰 [id276221064|@melancholia312]' + space
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text=['/меню', '/помощь'], inline=False))
 
-            if clear_msg(msg, 'точно удалить персонажа'):
-                delete_hero(user_id)
-                answer = "Да уж!"
-                send_message(peer_id=peer_id, text=answer)       
+        elif is_exists(user_id):
 
-            elif clear_msg(msg, 'меню'):
-                text_for_buttons = ['/мой персонаж', '/магазин', '/аукцион',
-                                    '/данж', '/контракты', '/рыбалка', '/таверна', '/скачки', '/рейтинг', '/реферальная система']
-                answer = 'Меню'
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+            if get_user_flag(user_id)['flag'] != 5:
+                user_register(msg, user_id)
 
-            elif clear_msg(msg, 'реферальная система'):
-                text_for_buttons = ['/награды']
-                space = "\n" + '~~~~~~~~~~~~~' + "\n"
-                referal_key = get_user_referal_key(user_id)
-                answer = 'Реферальная система' + space + 'Приглашайте своих друзей, чтобы получать награды!' + '\n' + \
-                         f'Ваш код приглашения: {referal_key}' + space
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+            elif check_dange_floor(user_id) > 0:
+                dange_gameplay(msg, user_id, peer_id)
 
-            elif clear_msg(msg, 'награды'):
-                space = "\n" + '~~~~~~~~~~~~~' + "\n"
-                referal_quantity = count_referals(user_id)
-                answer = 'Награды' + space
-                if referal_quantity >= 3:
-                    answer += '❌ '
-                else:
-                    answer += '⭕ '
-                answer += 'За 3 реферала вы получите Дорожный сундук' + '\n'
-                if referal_quantity >= 6:
-                    answer += '❌ '
-                else:
-                    answer += '⭕ '
-                answer += 'За 6 рефералов вы получите Бутылку с письмом' + '\n'
-                if referal_quantity >= 9:
-                    answer += '❌ '
-                else:
-                    answer += '⭕ '
-                answer += 'За 9 рефералов вы получите 3 Зачарованых сундука' + '\n'
-                if referal_quantity >= 14:
-                    answer += '❌ '
-                else:
-                    answer += '⭕ '
-                answer += 'За 14 рефералов вы получите Потерянную шкатулку' + '\n'
-                if referal_quantity >= 24:
-                    answer += '❌ '
-                else:
-                    answer += '⭕ '
-                answer += 'За 24 реферала вы получите Аукционный сундук' + '\n'
-                answer += space + f'Количество ваших рефералов: {referal_quantity}'
-                send_message(peer_id=peer_id, text=answer)
+            elif '/' in msg:
 
-            elif clear_msg(msg, 'время'):
-                now_time = time.localtime()
-                alt_year = str(now_time.tm_year - 1234)
+                if clear_msg(msg, 'точно удалить персонажа'):
+                    delete_hero(user_id)
+                    answer = "Да уж!"
+                    send_message(peer_id=peer_id, text=answer)
 
-                week_days = {
-                    0: "Понедельник",
-                    1: "Вторник",
-                    2: "Среда",
-                    3: "Четверг",
-                    4: "Пятница",
-                    5: "Суббота",
-                    6: "Воскресенье",
-                    7: "Понедельник"
-                }
-                months = {
-                    1: "Января", 7: "Июля",
-                    2: "Февраля", 8: "Августа",
-                    3: "Марта", 9: "Сентебря",
-                    4: "Апреля", 10: "Октября",
-                    5: "Майя", 11: "Ноября",
-                    6: "Июня", 12: "Декабря"
-                }
-
-                answer = str(now_time.tm_hour) + ':' + str(now_time.tm_min) + '\n' + \
-                         week_days[now_time.tm_wday] + " " + months[now_time.tm_mon] + " " + \
-                         alt_year + " года."
-                send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'мой персонаж'):
-                hero_info = get_hero_info(user_id)
-                answer = show_hero_info(hero_info)
-                text_for_buttons = ['/статы', '/мой инвентарь', '/мое снаряжение', '/дуэль инфо', '/состояние персонажа']
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons), attachment=hero_info['image'])
-
-            elif clear_msg(msg, 'баланс'):
-                hero_money = get_hero_info(user_id)['money']
-                answer = f'Ваш баланс - {hero_money} крон'
-                send_message(peer_id=peer_id, text=answer)
-                
-            elif clear_msg(msg, 'состояние персонажа'):
-                hero_status = get_user_status(user_id)
-                full_status_info = show_hero_status(hero_status)
-                answer = full_status_info['answer']
-                text_for_buttons = full_status_info['text_for_buttons']
-                if text_for_buttons:
+                elif clear_msg(msg, 'меню'):
+                    text_for_buttons = ['/мой персонаж', '/магазин', '/аукцион',
+                                        '/данж', '/контракты', '/рыбалка', '/таверна', '/скачки', '/рейтинг', '/реферальная система']
+                    answer = 'Меню'
                     send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'разбудить персонажа'):
-                if check_sleep(user_id):
-                    user_sleep_time = get_user_status(user_id)['sleep_time']
-                    delta = user_sleep_time - datetime.datetime.now()
-                    seconds = delta.seconds
-                    days = delta.days
-                    if seconds > 10800 or days < 0:
-                        wake_up(user_id)
-                        answer = 'Выш персонаж отдохнул и полон сил'
-                        send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'реферальная система'):
+                    text_for_buttons = ['/награды']
+                    space = "\n" + '~~~~~~~~~~~~~' + "\n"
+                    referal_key = get_user_referal_key(user_id)
+                    answer = 'Реферальная система' + space + 'Приглашайте своих друзей, чтобы получать награды!' + '\n' + \
+                             f'Ваш код приглашения: {referal_key}' + space
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+
+                elif clear_msg(msg, 'награды'):
+                    space = "\n" + '~~~~~~~~~~~~~' + "\n"
+                    referal_quantity = count_referals(user_id)
+                    answer = 'Награды' + space
+                    if referal_quantity >= 3:
+                        answer += '❌ '
                     else:
-                        remaining_time = strftime("%H:%M", gmtime(seconds))
-                        answer = f'Еще рано. До пробуждения осталось {remaining_time}'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Ваш персонаж не спит'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'досрочно разбудить персонажа'):
-                if check_sleep(user_id):
-                    wake_up(user_id, rest=False)
-                    answer = 'Выш персонаж нисколько не отдохнул и чувствуется себя отвратительно'
-                    send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Ваш персонаж не спит'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'закончить экспедицию'):
-                if in_expedition(user_id):
-                    user_expedition_time = get_user_status(user_id)['expedition_time']
-                    delta = user_expedition_time - datetime.datetime.now()
-                    seconds = delta.seconds
-                    days = delta.days
-
-                    if seconds > 3600 or days < 0:
-                        answer = choose_event(user_id)
-                        end_expedition(user_id)
-                        send_message(peer_id=peer_id, text=answer)
+                        answer += '⭕ '
+                    answer += 'За 3 реферала вы получите Дорожный сундук' + '\n'
+                    if referal_quantity >= 6:
+                        answer += '❌ '
                     else:
-                        remaining_time = strftime("%H:%M", gmtime(seconds))
-                        answer = f'Еще рано. До конца экспедиции осталось {remaining_time}'
-                        send_message(peer_id=peer_id, text=answer)
-
-                else:
-                    answer = 'Вы не ходили в экспедицию!'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'отдых'):
-                if not check_sleep(user_id):
-                    if not in_expedition(user_id):
-                        if not is_working(user_id):
-                            go_to_sleep(user_id)
-                            answer = 'Ваш персонаж пошел отдыхать. Он будет готов вновь отправиться в бой через 3 часа'
-                            send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = "Ваш персонаж работает"
-                            send_message(peer_id=peer_id, text=answer)
+                        answer += '⭕ '
+                    answer += 'За 6 рефералов вы получите Бутылку с письмом' + '\n'
+                    if referal_quantity >= 9:
+                        answer += '❌ '
                     else:
-                        answer = "Ваш персонаж находится в экспедиции"
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Ваш персонаж и так отдыхает'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif 'дуэль инфо' in msg.lower():
-                space = "\n" + '~~~~~~~~~~~~~' + "\n"
-                pvp_info = check_pvp_stat(user_id)
-                answer = 'Информация о ваших дуэлях' + space + \
-                         f'Количество побед: {pvp_info["victory_count"]}' + '\n' + \
-                         f'Количество поражений: {pvp_info["defeat_count"]}' + '\n'
-                if pvp_info['enemy_id'] != 0:
-                    if pvp_info['have_pvp_offer']:
-                        answer += f'Вам бросил вызов игрок @id{pvp_info["enemy_id"]}' + space
-                        text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
-                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        answer += '⭕ '
+                    answer += 'За 9 рефералов вы получите 3 Зачарованых сундука' + '\n'
+                    if referal_quantity >= 14:
+                        answer += '❌ '
                     else:
-                        answer += f'Вы бросили вызов игроку @id{pvp_info["enemy_id"]}' + space
-                        text_for_buttons = ['/Дуэль отозвать']
-                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    answer += f'Вы не состоите в дуэли' + space
+                        answer += '⭕ '
+                    answer += 'За 14 рефералов вы получите Потерянную шкатулку' + '\n'
+                    if referal_quantity >= 24:
+                        answer += '❌ '
+                    else:
+                        answer += '⭕ '
+                    answer += 'За 24 реферала вы получите Аукционный сундук' + '\n'
+                    answer += space + f'Количество ваших рефералов: {referal_quantity}'
                     send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'лекарь'):
-                if not is_alive(user_id):
+                elif clear_msg(msg, 'время'):
+                    now_time = time.localtime()
+                    alt_year = str(now_time.tm_year - 1234)
+
+                    week_days = {
+                        0: "Понедельник",
+                        1: "Вторник",
+                        2: "Среда",
+                        3: "Четверг",
+                        4: "Пятница",
+                        5: "Суббота",
+                        6: "Воскресенье",
+                        7: "Понедельник"
+                    }
+                    months = {
+                        1: "Января", 7: "Июля",
+                        2: "Февраля", 8: "Августа",
+                        3: "Марта", 9: "Сентебря",
+                        4: "Апреля", 10: "Октября",
+                        5: "Майя", 11: "Ноября",
+                        6: "Июня", 12: "Декабря"
+                    }
+
+                    answer = str(now_time.tm_hour) + ':' + str(now_time.tm_min) + '\n' + \
+                             week_days[now_time.tm_wday] + " " + months[now_time.tm_mon] + " " + \
+                             alt_year + " года."
+                    send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'мой персонаж'):
                     hero_info = get_hero_info(user_id)
-                    user_money = hero_info['money']
-                    cost = (hero_info['lvl']//3+1) * 75
-                    if user_money >= cost:
-                        add_money(user_id, -cost)
-                        answer = f'Поздравляю! Вас отлично подлатали и вы готовы сражаться вновь! Вам это обошлось в {cost} крон'
-                        kill_or_heal_hero(user_id, False)
-                        send_message(peer_id=peer_id, text=answer)
+                    answer = show_hero_info(hero_info)
+                    text_for_buttons = ['/статы', '/мой инвентарь', '/мое снаряжение', '/дуэль инфо', '/состояние персонажа']
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons), attachment=hero_info['image'])
+
+                elif clear_msg(msg, 'баланс'):
+                    hero_money = get_hero_info(user_id)['money']
+                    answer = f'Ваш баланс - {hero_money} крон'
+                    send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'состояние персонажа'):
+                    hero_status = get_user_status(user_id)
+                    full_status_info = show_hero_status(hero_status)
+                    answer = full_status_info['answer']
+                    text_for_buttons = full_status_info['text_for_buttons']
+                    if text_for_buttons:
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                     else:
-                        answer = 'У вас недостаточно средств'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Вы и так живее всех живых...'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'статы'):
-                hero_stats = show_hero_stats(get_stats(user_id))
-                text_for_buttons = ['/прокачка статов']
-                send_message(peer_id=peer_id, text=hero_stats, keyboard=create_keyboard(text_for_buttons))
-
-            elif clear_msg(msg, 'мой инвентарь'):
-                text_for_buttons = ['/Предметы', '/Материалы', '/Сокровищницы']
-                answer = 'Что вас интересует?'
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-
-            elif clear_msg(msg, 'предметы'):
-                hero_items = get_user_inventory(user_id, False)
-                if hero_items:
-                    text_for_buttons = get_items_names(user_id, True)
-                    answer = 'Ваш инвентарь' + '\n'
-                    for item in hero_items:
-                        answer += show_item_small_description(item)
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    answer = 'Ваш инвентарь пуст'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'сокровищницы'):
-                user_treasures = get_user_treasures(user_id)
-                treasures_info = show_user_treasures(user_treasures)
-                answer = treasures_info['answer']
-                text_for_buttons = treasures_info['text_for_buttons']
-                if text_for_buttons:
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif '/открыть' in msg.lower():
-                treasures_numbers = {'дорожный сундук': 1,
-                                     'зачарованый сундук': 2,
-                                     'аукционный сундук': 3,
-                                     'потеряная шкатулка': 4,
-                                     'бутылка с письмом': 5}
-                try:
-                    treausre_name = msg.lower().split('/открыть')[1].strip()
-                except:
-                    treausre_name = None
-
-                if treausre_name:
-                    if check_treasure_quantity(user_id, treasures_numbers[treausre_name]):
-                        if check_full_inventory(user_id):
-                            answer = open_treasure(user_id, treasures_numbers[treausre_name])
+                elif clear_msg(msg, 'разбудить персонажа'):
+                    if check_sleep(user_id):
+                        user_sleep_time = get_user_status(user_id)['sleep_time']
+                        delta = user_sleep_time - datetime.datetime.now()
+                        seconds = delta.seconds
+                        days = delta.days
+                        if seconds > 10800 or days < 0:
+                            wake_up(user_id)
+                            answer = 'Выш персонаж отдохнул и полон сил'
                             send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'У вас нет места в инвентаре'
-                            send_message(peer_id=peer_id, text=answer)    
-                    else:
-                        answer = 'У вас нет этой сокровищницы'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Такой сокровищницы не существует'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'материалы'):
-                answer = 'В разработке'
-                send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'мое снаряжение'):
-                user_equipment = show_user_equipment(user_id)
-                answer = user_equipment['answer']
-                if user_equipment['buttons']:
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(user_equipment['buttons']))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, get_items_names(only_users_items=False)):
-                item_name = msg.split('/')[1]
-                item_stats = get_single_item_stat_by_name(item_name)
-                answer = show_item_stats(item_stats)
-                text_for_buttons = []
-                hero_info = get_hero_info(user_id)
-
-                list_with_equipment = [get_weapon_by_relation(hero_info['item_head']),
-                                       get_weapon_by_relation(hero_info['item_body']),
-                                       get_weapon_by_relation(hero_info['item_legs']),
-                                       get_weapon_by_relation(hero_info['item_artifact']),
-                                       get_weapon_by_relation(hero_info['weapon'])
-                                       ]
-                if item_name.lower() in list_with_equipment:
-                    items_list = get_items_names(user_id, False)
-                    count_item = Counter(items_list)
-                    text_for_buttons.append(f'/снять {item_name.title()}')
-                    if count_item[item_name.lower()] > 1:
-                        text_for_buttons.append(f'/выкинуть {item_name.title()}')
-
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-
-                elif item_name.lower() in get_items_names(user_id, False):
-                    text_for_buttons.append(f'/надеть {item_name.title()}')
-                    text_for_buttons.append(f'/выкинуть {item_name.title()}')
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'аукцион'):
-                set_first_page(user_id)
-                auction_info = create_auction_list(user_id)
-                if auction_info:
-                    answer = 'Аукцион' + '\n'
-                    answer += auction_info['auction_list']
-                    text_for_buttons = auction_info['buttons']
-                    if text_for_buttons:
-                        send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                    else:
-                        send_message(peer_id=user_id, text=answer)
-                else:
-                    answer = 'Никто еще не выставлял вещи на аукцион.'
-                    send_message(peer_id=user_id, text=answer)
-
-            elif '/мои лоты' in msg.lower():
-                set_first_page(user_id)
-                auction_info = create_user_auction_list(user_id)
-                if auction_info:
-                    send_message(peer_id=user_id, text=auction_info)
-                else:
-                    answer = 'Вы ничего не выставляли на аукцион'
-                    send_message(peer_id=user_id, text=answer)
-
-            elif clear_msg(msg, 'вперед'):
-                next_page(user_id, True)
-                auction_info = create_auction_list(user_id)
-                if auction_info:
-                    text_for_buttons = auction_info['buttons']
-                    delete_message(peer_id=user_id, message_id=get_message_id_for_auction(user_id))
-                    answer = 'Аукцион' + '\n'
-                    answer += auction_info['auction_list']
-                    if text_for_buttons:
-                        send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                    else:
-                        send_message(peer_id=user_id, text=answer)
-                else:
-                    next_page(user_id, False)
-
-            elif clear_msg(msg, 'назад'):
-                next_page(user_id, False)
-                auction_info = create_auction_list(user_id)
-                if auction_info:
-                    text_for_buttons = auction_info['buttons']
-                    delete_message(peer_id=user_id, message_id=get_message_id_for_auction(user_id))
-                    answer = 'Аукцион' + '\n'
-                    answer += auction_info['auction_list']
-                    if text_for_buttons:
-                        send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                    else:
-                        send_message(peer_id=user_id, text=answer)
-                else:
-                    next_page(user_id, True)
-
-            elif '/выкупить' in msg.lower():
-                try:
-                    auction_id = int(msg.lower().split('/выкупить')[1].strip())
-                except:
-                    auction_id = None
-
-                if auction_id in get_all_auction_ids(user_id):
-                    if check_full_inventory(user_id):
-                        buy_info = buy_item_auction(user_id, auction_id)
-                        if buy_info:
-                            seller_id = buy_info[1]
-                            item_cost = buy_info[2]
-                            offer_id = buy_info[3]
-                            answer = 'Поздравляю с покупкой!'
+                            remaining_time = strftime("%H:%M", gmtime(seconds))
+                            answer = f'Еще рано. До пробуждения осталось {remaining_time}'
                             send_message(peer_id=peer_id, text=answer)
-                            seller_answer = f'У вас купили лот {offer_id} за {item_cost} монет!'
-                            send_message(peer_id=seller_id, text=seller_answer)
+                    else:
+                        answer = 'Ваш персонаж не спит'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'досрочно разбудить персонажа'):
+                    if check_sleep(user_id):
+                        wake_up(user_id, rest=False)
+                        answer = 'Выш персонаж нисколько не отдохнул и чувствуется себя отвратительно'
+                        send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Ваш персонаж не спит'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'закончить экспедицию'):
+                    if in_expedition(user_id):
+                        user_expedition_time = get_user_status(user_id)['expedition_time']
+                        delta = user_expedition_time - datetime.datetime.now()
+                        seconds = delta.seconds
+                        days = delta.days
+
+                        if seconds > 3600 or days < 0:
+                            answer = choose_event(user_id)
+                            end_expedition(user_id)
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            remaining_time = strftime("%H:%M", gmtime(seconds))
+                            answer = f'Еще рано. До конца экспедиции осталось {remaining_time}'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    else:
+                        answer = 'Вы не ходили в экспедицию!'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'отдых'):
+                    if not check_sleep(user_id):
+                        if not in_expedition(user_id):
+                            if not is_working(user_id):
+                                go_to_sleep(user_id)
+                                answer = 'Ваш персонаж пошел отдыхать. Он будет готов вновь отправиться в бой через 3 часа'
+                                send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = "Ваш персонаж работает"
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = "Ваш персонаж находится в экспедиции"
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Ваш персонаж и так отдыхает'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif 'дуэль инфо' in msg.lower():
+                    space = "\n" + '~~~~~~~~~~~~~' + "\n"
+                    pvp_info = check_pvp_stat(user_id)
+                    answer = 'Информация о ваших дуэлях' + space + \
+                             f'Количество побед: {pvp_info["victory_count"]}' + '\n' + \
+                             f'Количество поражений: {pvp_info["defeat_count"]}' + '\n'
+                    if pvp_info['enemy_id'] != 0:
+                        if pvp_info['have_pvp_offer']:
+                            answer += f'Вам бросил вызов игрок @id{pvp_info["enemy_id"]}' + space
+                            text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
+                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
+                            answer += f'Вы бросили вызов игроку @id{pvp_info["enemy_id"]}' + space
+                            text_for_buttons = ['/Дуэль отозвать']
+                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                    else:
+                        answer += f'Вы не состоите в дуэли' + space
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'лекарь'):
+                    if not is_alive(user_id):
+                        hero_info = get_hero_info(user_id)
+                        user_money = hero_info['money']
+                        cost = (hero_info['lvl']//3+1) * 75
+                        if user_money >= cost:
+                            add_money(user_id, -cost)
+                            answer = f'Поздравляю! Вас отлично подлатали и вы готовы сражаться вновь! Вам это обошлось в {cost} крон'
+                            kill_or_heal_hero(user_id, False)
+                            send_message(peer_id=peer_id, text=answer)
                         else:
                             answer = 'У вас недостаточно средств'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'У вас нет места в инвентаре!'
+                        answer = 'Вы и так живее всех живых...'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Этого лота не существует или его невозможно купить'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif '/снять с продажи' in msg.lower():
-                try:
-                    auction_id = int(msg.lower().split('/снять с продажи')[1][1:])
-                except:
-                    auction_id = None
+                elif clear_msg(msg, 'статы'):
+                    hero_stats = show_hero_stats(get_stats(user_id))
+                    text_for_buttons = ['/прокачка статов']
+                    send_message(peer_id=peer_id, text=hero_stats, keyboard=create_keyboard(text_for_buttons))
 
-                if auction_id in get_all_auction_ids(user_id, True):
-                    drop_lot(user_id, auction_id)
-                    answer = f'Вы сняли с продажи лот {auction_id}'
-                    send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Вы не выставляли этот лот на продажу'
-                    send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'мой инвентарь'):
+                    text_for_buttons = ['/Предметы', '/Материалы', '/Сокровищницы']
+                    answer = 'Что вас интересует?'
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
 
-            elif clear_msg(msg, 'прокачка статов'):
-                points = get_upgrade_points(user_id)
-                answer = f'У вас {points} очков прокачки. Что вы прокачаете?'
-                text_for_buttons = ['/Силу', '/Ловкость', '/Интеллект']
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                elif clear_msg(msg, 'предметы'):
+                    hero_items = get_user_inventory(user_id, False)
+                    if hero_items:
+                        text_for_buttons = get_items_names(user_id, True)
+                        answer = 'Ваш инвентарь' + '\n'
+                        for item in hero_items:
+                            answer += show_item_small_description(item)
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                    else:
+                        answer = 'Ваш инвентарь пуст'
+                        send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, ['силу', 'ловкость', 'интеллект']):
-                if get_upgrade_points(user_id) > 0:
-                    stat_from_msg = msg.split('/')[1]
-                    answer = f'Вы успешно прокачали {stat_from_msg}!'
-                    if stat_from_msg.lower() == 'ловкость':
-                        stat = 'agility'
-                    elif stat_from_msg.lower() == 'силу':
-                        stat = 'strength'
-                    elif stat_from_msg.lower() == 'интеллект':
-                        stat = 'intellect'
-                    add_stat_point(user_id, stat)
-                    send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = f'У вас недостаточно очков прокачки!!'
-                    send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'сокровищницы'):
+                    user_treasures = get_user_treasures(user_id)
+                    treasures_info = show_user_treasures(user_treasures)
+                    answer = treasures_info['answer']
+                    text_for_buttons = treasures_info['text_for_buttons']
+                    if text_for_buttons:
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                    else:
+                        send_message(peer_id=peer_id, text=answer)
 
-            elif '/надеть' in msg.lower():
-                item_names = []
-                for item in get_user_inventory(user_id, False):
-                    item_names.append(item['name'].lower())
-                if msg.lower().split('/надеть')[1][1:] in item_names:
-                    item_name = msg.lower().split('/надеть')[1][1:]
-                    if check_item_class(user_id, item_name):
-                        if already_equip_or_not(user_id, item_name):
-                            equip_item(user_id, item_name)
-                            answer = f'Вы успешно надели {item_name.title()}'
-                            send_message(peer_id=peer_id, text=answer)
+                elif '/открыть' in msg.lower():
+                    treasures_numbers = {'дорожный сундук': 1,
+                                         'зачарованый сундук': 2,
+                                         'аукционный сундук': 3,
+                                         'потеряная шкатулка': 4,
+                                         'бутылка с письмом': 5}
+                    try:
+                        treausre_name = msg.lower().split('/открыть')[1].strip()
+                    except:
+                        treausre_name = None
+
+                    if treausre_name:
+                        if check_treasure_quantity(user_id, treasures_numbers[treausre_name]):
+                            if check_full_inventory(user_id):
+                                answer = open_treasure(user_id, treasures_numbers[treausre_name])
+                                send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'У вас нет места в инвентаре'
+                                send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'Этот слот предмета уже занят!'
+                            answer = 'У вас нет этой сокровищницы'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Этот предмет не предназначен для вашего класса'
+                        answer = 'Такой сокровищницы не существует'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Этого предмета нет у вас в инвентаре'
+
+                elif clear_msg(msg, 'материалы'):
+                    answer = 'В разработке'
                     send_message(peer_id=peer_id, text=answer)
 
-            elif '/снять' in msg.lower():
-                item_names = []
-                for item in get_user_inventory(user_id, False):
-                    item_names.append(item['name'].lower())
-                if msg.lower().split('/снять')[1][1:] in item_names:
-                    item_name = msg.lower().split('/снять')[1][1:]
-                    if not already_equip_or_not(user_id, item_name):
-                        equip_item(user_id, item_name, False)
-                        answer = f'Вы успешно сняли {item_name.title()}'
+                elif clear_msg(msg, 'мое снаряжение'):
+                    user_equipment = show_user_equipment(user_id)
+                    answer = user_equipment['answer']
+                    if user_equipment['buttons']:
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(user_equipment['buttons']))
+                    else:
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, get_items_names(only_users_items=False)):
+                    item_name = msg.split('/')[1]
+                    item_stats = get_single_item_stat_by_name(item_name)
+                    answer = show_item_stats(item_stats)
+                    text_for_buttons = []
+                    hero_info = get_hero_info(user_id)
+
+                    list_with_equipment = [get_weapon_by_relation(hero_info['item_head']),
+                                           get_weapon_by_relation(hero_info['item_body']),
+                                           get_weapon_by_relation(hero_info['item_legs']),
+                                           get_weapon_by_relation(hero_info['item_artifact']),
+                                           get_weapon_by_relation(hero_info['weapon'])
+                                           ]
+                    if item_name.lower() in list_with_equipment:
+                        items_list = get_items_names(user_id, False)
+                        count_item = Counter(items_list)
+                        text_for_buttons.append(f'/снять {item_name.title()}')
+                        if count_item[item_name.lower()] > 1:
+                            text_for_buttons.append(f'/выкинуть {item_name.title()}')
+
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+
+                    elif item_name.lower() in get_items_names(user_id, False):
+                        text_for_buttons.append(f'/надеть {item_name.title()}')
+                        text_for_buttons.append(f'/выкинуть {item_name.title()}')
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                    else:
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'аукцион'):
+                    set_first_page(user_id)
+                    auction_info = create_auction_list(user_id)
+                    if auction_info:
+                        answer = 'Аукцион' + '\n'
+                        answer += auction_info['auction_list']
+                        text_for_buttons = auction_info['buttons']
+                        if text_for_buttons:
+                            send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
+                            send_message(peer_id=user_id, text=answer)
+                    else:
+                        answer = 'Никто еще не выставлял вещи на аукцион.'
+                        send_message(peer_id=user_id, text=answer)
+
+                elif '/мои лоты' in msg.lower():
+                    set_first_page(user_id)
+                    auction_info = create_user_auction_list(user_id)
+                    if auction_info:
+                        send_message(peer_id=user_id, text=auction_info)
+                    else:
+                        answer = 'Вы ничего не выставляли на аукцион'
+                        send_message(peer_id=user_id, text=answer)
+
+                elif clear_msg(msg, 'вперед'):
+                    next_page(user_id, True)
+                    auction_info = create_auction_list(user_id)
+                    if auction_info:
+                        text_for_buttons = auction_info['buttons']
+                        delete_message(peer_id=user_id, message_id=get_message_id_for_auction(user_id))
+                        answer = 'Аукцион' + '\n'
+                        answer += auction_info['auction_list']
+                        if text_for_buttons:
+                            send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
+                            send_message(peer_id=user_id, text=answer)
+                    else:
+                        next_page(user_id, False)
+
+                elif clear_msg(msg, 'назад'):
+                    next_page(user_id, False)
+                    auction_info = create_auction_list(user_id)
+                    if auction_info:
+                        text_for_buttons = auction_info['buttons']
+                        delete_message(peer_id=user_id, message_id=get_message_id_for_auction(user_id))
+                        answer = 'Аукцион' + '\n'
+                        answer += auction_info['auction_list']
+                        if text_for_buttons:
+                            send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
+                            send_message(peer_id=user_id, text=answer)
+                    else:
+                        next_page(user_id, True)
+
+                elif '/выкупить' in msg.lower():
+                    try:
+                        auction_id = int(msg.lower().split('/выкупить')[1].strip())
+                    except:
+                        auction_id = None
+
+                    if auction_id in get_all_auction_ids(user_id):
+                        if check_full_inventory(user_id):
+                            buy_info = buy_item_auction(user_id, auction_id)
+                            if buy_info:
+                                seller_id = buy_info[1]
+                                item_cost = buy_info[2]
+                                offer_id = buy_info[3]
+                                answer = 'Поздравляю с покупкой!'
+                                send_message(peer_id=peer_id, text=answer)
+                                seller_answer = f'У вас купили лот {offer_id} за {item_cost} монет!'
+                                send_message(peer_id=seller_id, text=seller_answer)
+                            else:
+                                answer = 'У вас недостаточно средств'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'У вас нет места в инвентаре!'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Этого лота не существует или его невозможно купить'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/снять с продажи' in msg.lower():
+                    try:
+                        auction_id = int(msg.lower().split('/снять с продажи')[1][1:])
+                    except:
+                        auction_id = None
+
+                    if auction_id in get_all_auction_ids(user_id, True):
+                        drop_lot(user_id, auction_id)
+                        answer = f'Вы сняли с продажи лот {auction_id}'
                         send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Вам нечего снимать...'
+                        answer = 'Вы не выставляли этот лот на продажу'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Этого предмета нет у вас в инвентаре'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif '/выкинуть' in msg.lower():
-                item_names = []
-                for item in get_user_inventory(user_id, False):
-                    item_names.append(item['name'].lower())
-                if msg.lower().split('/выкинуть')[1][1:] in item_names:
-                    item_name = msg.lower().split('/выкинуть')[1][1:]
-                    if drop_item(user_id, item_name):
-                        answer = f'Вы выкинули {item_name.title()}'
+                elif clear_msg(msg, 'прокачка статов'):
+                    points = get_upgrade_points(user_id)
+                    answer = f'У вас {points} очков прокачки. Что вы прокачаете?'
+                    text_for_buttons = ['/Силу', '/Ловкость', '/Интеллект']
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+
+                elif clear_msg(msg, ['силу', 'ловкость', 'интеллект']):
+                    if get_upgrade_points(user_id) > 0:
+                        stat_from_msg = msg.split('/')[1]
+                        answer = f'Вы успешно прокачали {stat_from_msg}!'
+                        if stat_from_msg.lower() == 'ловкость':
+                            stat = 'agility'
+                        elif stat_from_msg.lower() == 'силу':
+                            stat = 'strength'
+                        elif stat_from_msg.lower() == 'интеллект':
+                            stat = 'intellect'
+                        add_stat_point(user_id, stat)
                         send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = f'Вы не можете выкинуть этот предмет, так как он надет на вас'
+                        answer = f'У вас недостаточно очков прокачки!!'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Этого предмета нет у вас в инвентаре или его не существует'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif '/продать' in msg.lower():
-                if '-' in msg:
+                elif '/надеть' in msg.lower():
                     item_names = []
                     for item in get_user_inventory(user_id, False):
                         item_names.append(item['name'].lower())
-                    try:
-                        item_info = msg.lower().split('/продать')[1].lower().strip().split('-')
-                        item_name = item_info[0][:-1]
-                        item_cost = int(item_info[1])
-                        if item_cost > 10000000:
-                            item_cost = None
-
-                    except:
-                        item_name = None
-                        item_cost = None
-
-                    if item_name in item_names:
-                        if item_cost:
-                            if full_auction_lots(user_id):
-                                if sell_item(user_id, item_name, item_cost):
-                                    answer = f'Вы успешно выставили {item_name.title()} на продажу за {item_cost}!'
-                                    send_message(peer_id=peer_id, text=answer)
-                                else:
-                                    answer = f'Вы не можете выкинуть этот предмет, так как он надет на вас'
-                                    send_message(peer_id=peer_id, text=answer)
+                    if msg.lower().split('/надеть')[1][1:] in item_names:
+                        item_name = msg.lower().split('/надеть')[1][1:]
+                        if check_item_class(user_id, item_name):
+                            if already_equip_or_not(user_id, item_name):
+                                equip_item(user_id, item_name)
+                                answer = f'Вы успешно надели {item_name.title()}'
+                                send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = f'Вы выставили максимальное количество предметов на аукцион'
+                                answer = 'Этот слот предмета уже занят!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = f'Куда так цену загибаешь, друг?'
+                            answer = 'Этот предмет не предназначен для вашего класса'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Этого предмета нет у вас в инвентаре'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/снять' in msg.lower():
+                    item_names = []
+                    for item in get_user_inventory(user_id, False):
+                        item_names.append(item['name'].lower())
+                    if msg.lower().split('/снять')[1][1:] in item_names:
+                        item_name = msg.lower().split('/снять')[1][1:]
+                        if not already_equip_or_not(user_id, item_name):
+                            equip_item(user_id, item_name, False)
+                            answer = f'Вы успешно сняли {item_name.title()}'
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Вам нечего снимать...'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Этого предмета нет у вас в инвентаре'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/выкинуть' in msg.lower():
+                    item_names = []
+                    for item in get_user_inventory(user_id, False):
+                        item_names.append(item['name'].lower())
+                    if msg.lower().split('/выкинуть')[1][1:] in item_names:
+                        item_name = msg.lower().split('/выкинуть')[1][1:]
+                        if drop_item(user_id, item_name):
+                            answer = f'Вы выкинули {item_name.title()}'
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = f'Вы не можете выкинуть этот предмет, так как он надет на вас'
                             send_message(peer_id=peer_id, text=answer)
                     else:
                         answer = 'Этого предмета нет у вас в инвентаре или его не существует'
                         send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'магазин'):
-                if get_time_to_recreate_shop(user_id):
-                    create_personal_shop(user_id)
-                shop_info = show_magazine(user_id)
-                text_for_buttons = shop_info['text_for_buttons']
-                answer = shop_info['show_case']
-                if text_for_buttons:
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
+                elif '/продать' in msg.lower():
+                    if '-' in msg:
+                        item_names = []
+                        for item in get_user_inventory(user_id, False):
+                            item_names.append(item['name'].lower())
+                        try:
+                            item_info = msg.lower().split('/продать')[1].lower().strip().split('-')
+                            item_name = item_info[0][:-1]
+                            item_cost = int(item_info[1])
+                            if item_cost > 10000000:
+                                item_cost = None
 
-            elif '/обновить магазин' in msg.lower():
-                create_personal_shop(user_id)
-                shop_info = show_magazine(user_id)
-                text_for_buttons = shop_info['text_for_buttons']
-                answer = shop_info['show_case']
-                user_money = get_hero_info(user_id)['money']
-                if user_money >= 500:
-                    add_money(user_id, -500)
+                        except:
+                            item_name = None
+                            item_cost = None
+
+                        if item_name in item_names:
+                            if item_cost:
+                                if full_auction_lots(user_id):
+                                    if sell_item(user_id, item_name, item_cost):
+                                        answer = f'Вы успешно выставили {item_name.title()} на продажу за {item_cost}!'
+                                        send_message(peer_id=peer_id, text=answer)
+                                    else:
+                                        answer = f'Вы не можете выкинуть этот предмет, так как он надет на вас'
+                                        send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = f'Вы выставили максимальное количество предметов на аукцион'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = f'Куда так цену загибаешь, друг?'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Этого предмета нет у вас в инвентаре или его не существует'
+                            send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'магазин'):
+                    if get_time_to_recreate_shop(user_id):
+                        create_personal_shop(user_id)
+                    shop_info = show_magazine(user_id)
+                    text_for_buttons = shop_info['text_for_buttons']
+                    answer = shop_info['show_case']
                     if text_for_buttons:
                         send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                     else:
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'У вас недостаточно средств'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif '/купить' in msg.lower():
-                try:
-                    item_id = int(msg.lower().split('/купить')[1].strip())
-                except:
-                    item_id = None
-
-                if item_id in item_ids_from_shop(user_id):
-                    if check_full_inventory(user_id):
-                        if buy_item(user_id, item_id):
-                            answer = 'Поздравляю с покупкой!'
-                            send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = 'У вас недостаточно средств'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'У вас нет места в инвентаре!'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Этого предмета не существует или его невозможно купить'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'рейтинг'):
-                answer = 'По каким критериям показать?'
-                text_for_buttons = ['/рейтинг победы в дуэлях', '/рейтинг уровень',
-                                    '/рейтинг количество крон']
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-
-            elif '/рейтинг победы в дуэлях' in msg.lower():
-                space = '~~~~~~~~~~~~~' + "\n"
-                answer = 'Топ игроков по победам' + '\n' + space
-                list_with_top_users = get_top_user_by_victory_count()
-                count = 0
-                for user in list_with_top_users:
-                    count += 1
-                    answer += f'№{str(count)}' + ' - ' + f'[id{user["user_id"]}|{user["name"]}]' + ' - ' \
-                              + f'{str(user["victory_count"])} побед' + '\n'
-                answer += space
-                send_message(peer_id=peer_id, text=answer)
-
-            elif '/рейтинг уровень' in msg.lower():
-                space = '~~~~~~~~~~~~~' + "\n"
-                answer = 'Топ игроков по уровню' + '\n' + space
-                list_with_top_users = get_top_user_by_lvl()
-                count = 0
-                for user in list_with_top_users:
-                    count += 1
-                    answer += f'№{str(count)}' + ' - ' + f'[id{user["user_id"]}|{user["name"]}]' + ' - ' \
-                              + f'{str(user["lvl"])} уровень' + '\n'
-                answer += space
-                send_message(peer_id=peer_id, text=answer)
-
-            elif '/рейтинг количество крон' in msg.lower():
-                space = '~~~~~~~~~~~~~' + "\n"
-                answer = 'Топ игроков по количеству крон' + '\n' + space
-                list_with_top_users = get_top_user_by_money()
-                count = 0
-                for user in list_with_top_users:
-                    count += 1
-                    answer += f'№{str(count)}' + ' - ' + f'[id{user["user_id"]}|{user["name"]}]' + ' - ' \
-                              + f'{str(user["money"])} Крон' + '\n'
-                answer += space
-                send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'скачки'):
-                if user_id != peer_id:
-                    space = " \n" + '~~~~~~~~~~~~~' + " \n"
-                    racers = {'летающая капуста': 0, 'волк одиночка': 0, 'ездовой ящер': 0}
-                    max_bets = 2 + get_users_count(peer_id)//5
-                    bets = get_all_bets(peer_id)
-                    if bets:
-                        answer = f'Начинается запись ставок ! {len(bets)}/{max_bets}' + space
-                        for bet in bets:
-                            racers[bet['racer_name']] += bet['bet']
-
-                    else:
-                        answer = 'В вашей беседе еще никто не делал ставок. Будьте первыми!' + space
-
-                    count = 0
-                    racers_names = 'Гонщики' + space
-                    for racer in racers:
-                        count += 1
-                        racers_names += f'{str(count)}. ' + racer.title() + ' - ' + f'{str(racers[racer])} крон' + '\n'
-                    send_message(peer_id=peer_id, text=answer + racers_names)
-
-                else:
-                    answer = 'Скачки доступны только в беседах'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif '/скачки ставка' in msg.lower():
-                if user_id != peer_id:
-                    racers = ['летающая капуста', 'волк одиночка',  'ездовой ящер']
-                    try:
-                        bet = int(msg.lower().split('/скачки ставка')[1].split('-')[1].strip())
-                        racer_name = msg.lower().split('/скачки ставка')[1].split('-')[0].strip()
-                    except:
-                        bet = 0
-                        racer_name = None
-
+                elif '/обновить магазин' in msg.lower():
+                    create_personal_shop(user_id)
+                    shop_info = show_magazine(user_id)
+                    text_for_buttons = shop_info['text_for_buttons']
+                    answer = shop_info['show_case']
                     user_money = get_hero_info(user_id)['money']
-                    if racer_name in racers:
-                        if user_money >= bet:
-                            if bet >= get_big_bet(peer_id):
-                                bet_info = make_bet(user_id, bet, peer_id, racer_name)
-                                if not bet_info:
-                                    answer = 'Вы уже выбрали гонщика'
-                                    send_message(peer_id=peer_id, text=answer)
-                                else:
-                                    answer = bet_info
-                                    bets = get_all_bets(peer_id)
-                                    max_bets = 2 + get_users_count(peer_id)//5
-                                    send_message(peer_id=peer_id, text=answer)
-                                    if len(bets) == max_bets:
-                                        answer = 'Гонка началась!'
-                                        delete_all_bets(peer_id)
-                                        send_message(peer_id=peer_id, text=answer)
-                                        race(racers, bets, peer_id)
+                    if user_money >= 500:
+                        add_money(user_id, -500)
+                        if text_for_buttons:
+                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'У вас недостаточно средств'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/купить' in msg.lower():
+                    try:
+                        item_id = int(msg.lower().split('/купить')[1].strip())
+                    except:
+                        item_id = None
+
+                    if item_id in item_ids_from_shop(user_id):
+                        if check_full_inventory(user_id):
+                            if buy_item(user_id, item_id):
+                                answer = 'Поздравляю с покупкой!'
+                                send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Вы не можете сделать такую маленькую ставку'
+                                answer = 'У вас недостаточно средств'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'У вас недостаточно средств'
+                            answer = 'У вас нет места в инвентаре!'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Такого гонщика не существует!'
+                        answer = 'Этого предмета не существует или его невозможно купить'
                         send_message(peer_id=peer_id, text=answer)
 
-                else:
-                    answer = 'Скачки доступны только в беседах'
+                elif clear_msg(msg, 'рейтинг'):
+                    answer = 'По каким критериям показать?'
+                    text_for_buttons = ['/рейтинг победы в дуэлях', '/рейтинг уровень',
+                                        '/рейтинг количество крон']
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+
+                elif '/рейтинг победы в дуэлях' in msg.lower():
+                    space = '~~~~~~~~~~~~~' + "\n"
+                    answer = 'Топ игроков по победам' + '\n' + space
+                    list_with_top_users = get_top_user_by_victory_count()
+                    count = 0
+                    for user in list_with_top_users:
+                        count += 1
+                        answer += f'№{str(count)}' + ' - ' + f'[id{user["user_id"]}|{user["name"]}]' + ' - ' \
+                                  + f'{str(user["victory_count"])} побед' + '\n'
+                    answer += space
                     send_message(peer_id=peer_id, text=answer)
 
-            elif '/дуэль' in msg.lower():
+                elif '/рейтинг уровень' in msg.lower():
+                    space = '~~~~~~~~~~~~~' + "\n"
+                    answer = 'Топ игроков по уровню' + '\n' + space
+                    list_with_top_users = get_top_user_by_lvl()
+                    count = 0
+                    for user in list_with_top_users:
+                        count += 1
+                        answer += f'№{str(count)}' + ' - ' + f'[id{user["user_id"]}|{user["name"]}]' + ' - ' \
+                                  + f'{str(user["lvl"])} уровень' + '\n'
+                    answer += space
+                    send_message(peer_id=peer_id, text=answer)
 
-                if '/дуэль принять' in msg.lower():
-                    enemy_id = find_enemy(user_id)
-                    if enemy_id:
+                elif '/рейтинг количество крон' in msg.lower():
+                    space = '~~~~~~~~~~~~~' + "\n"
+                    answer = 'Топ игроков по количеству крон' + '\n' + space
+                    list_with_top_users = get_top_user_by_money()
+                    count = 0
+                    for user in list_with_top_users:
+                        count += 1
+                        answer += f'№{str(count)}' + ' - ' + f'[id{user["user_id"]}|{user["name"]}]' + ' - ' \
+                                  + f'{str(user["money"])} Крон' + '\n'
+                    answer += space
+                    send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'скачки'):
+                    if user_id != peer_id:
+                        space = " \n" + '~~~~~~~~~~~~~' + " \n"
+                        racers = {'летающая капуста': 0, 'волк одиночка': 0, 'ездовой ящер': 0}
+                        max_bets = 2 + get_users_count(peer_id)//5
+                        bets = get_all_bets(peer_id)
+                        if bets:
+                            answer = f'Начинается запись ставок ! {len(bets)}/{max_bets}' + space
+                            for bet in bets:
+                                racers[bet['racer_name']] += bet['bet']
+
+                        else:
+                            answer = 'В вашей беседе еще никто не делал ставок. Будьте первыми!' + space
+
+                        count = 0
+                        racers_names = 'Гонщики' + space
+                        for racer in racers:
+                            count += 1
+                            racers_names += f'{str(count)}. ' + racer.title() + ' - ' + f'{str(racers[racer])} крон' + '\n'
+                        send_message(peer_id=peer_id, text=answer + racers_names)
+
+                    else:
+                        answer = 'Скачки доступны только в беседах'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/скачки ставка' in msg.lower():
+                    if user_id != peer_id:
+                        racers = ['летающая капуста', 'волк одиночка',  'ездовой ящер']
+                        try:
+                            bet = int(msg.lower().split('/скачки ставка')[1].split('-')[1].strip())
+                            racer_name = msg.lower().split('/скачки ставка')[1].split('-')[0].strip()
+                        except:
+                            bet = 0
+                            racer_name = None
+
+                        user_money = get_hero_info(user_id)['money']
+                        if racer_name in racers:
+                            if user_money >= bet:
+                                if bet >= get_big_bet(peer_id):
+                                    bet_info = make_bet(user_id, bet, peer_id, racer_name)
+                                    if not bet_info:
+                                        answer = 'Вы уже выбрали гонщика'
+                                        send_message(peer_id=peer_id, text=answer)
+                                    else:
+                                        answer = bet_info
+                                        bets = get_all_bets(peer_id)
+                                        max_bets = 2 + get_users_count(peer_id)//5
+                                        send_message(peer_id=peer_id, text=answer)
+                                        if len(bets) == max_bets:
+                                            answer = 'Гонка началась!'
+                                            delete_all_bets(peer_id)
+                                            send_message(peer_id=peer_id, text=answer)
+                                            race(racers, bets, peer_id)
+                                else:
+                                    answer = 'Вы не можете сделать такую маленькую ставку'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'У вас недостаточно средств'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого гонщика не существует!'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    else:
+                        answer = 'Скачки доступны только в беседах'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/дуэль' in msg.lower():
+
+                    if '/дуэль принять' in msg.lower():
+                        enemy_id = find_enemy(user_id)
+                        if enemy_id:
+                            if not check_sleep(user_id):
+                                if is_alive(user_id):
+                                    if not in_expedition(user_id):
+                                        if not is_working(user_id):
+                                            pvp_fight(user_id, enemy_id, peer_id)
+                                            drop_enemy_id(user_id, enemy_id)
+                                        else:
+                                            answer = "Ваш персонаж работает"
+                                            send_message(peer_id=peer_id, text=answer)
+                                    else:
+                                        answer = "Ваш персонаж находится в экспедиции"
+                                        send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Ваш персонаж мертв!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Ваш персонаж отдыхает!'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = f'Вас никто не вызывал на дуэль!'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    elif '/дуэль отклонить' in msg.lower():
+                        enemy_id = find_enemy(user_id)
+                        if enemy_id:
+                            answer = f'Вы отклонили дуэль'
+                            drop_enemy_id(user_id, enemy_id)
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = f'Вас никто не вызывал на дуэль!'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    elif '/дуэль отозвать' in msg.lower():
+                        if check_enemy_id(user_id):
+                            drop_enemy_id(user_id)
+                            answer = 'Вы отозвали дуэль!'
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Вы никого не вызывали на дуэль!'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    else:
+
+                        try:
+                            enemy_id = int(msg.lower().split('/дуэль')[1].strip().split('|')[0][3:])
+                        except:
+                            enemy_id = None
+
+                        if enemy_id:
+                            if is_exists(enemy_id):
+                                if not check_enemy_id(user_id):
+                                    if not check_enemy_id(enemy_id):
+                                        if not find_enemy(user_id):
+                                            if not find_enemy(enemy_id):
+                                                if enemy_id != user_id:
+                                                    if not check_sleep(user_id):
+                                                        if is_alive(enemy_id):
+                                                            if is_alive(user_id):
+                                                                if not in_expedition(user_id):
+                                                                    if not is_working(user_id):
+                                                                        choose_enemy(user_id, enemy_id)
+                                                                        answer = f'Вы бросили вызов игроку @id{enemy_id}'
+                                                                        text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
+                                                                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                                                                    else:
+                                                                        answer = "Ваш персонаж работает"
+                                                                        send_message(peer_id=peer_id, text=answer)
+                                                                else:
+                                                                    answer = "Ваш персонаж находится в экспедиции"
+                                                                    send_message(peer_id=peer_id, text=answer)
+                                                            else:
+                                                                answer = 'Ваш персонаж мертв!'
+                                                                send_message(peer_id=peer_id, text=answer)
+                                                        else:
+                                                            answer = 'Ты с трупом собрался сражаться?...'
+                                                            send_message(peer_id=peer_id, text=answer)
+                                                    else:
+                                                        answer = 'Ваш персонаж отдыхает!'
+                                                        send_message(peer_id=peer_id, text=answer)
+                                                else:
+                                                    answer = 'Ты больной?'
+                                                    send_message(peer_id=peer_id, text=answer)
+                                            else:
+                                                answer = 'Ваш соперник уже участвует в дуэли!'
+                                                send_message(peer_id=peer_id, text=answer)
+                                        else:
+                                            answer = 'Вы уже участвуете в дуэли!'
+                                            send_message(peer_id=peer_id, text=answer)
+                                    else:
+                                        answer = 'Ваш соперник уже участвует в дуэли!'
+                                        send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Вы уже участвуете в дуэли!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Данного пользователя не существует'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Данного пользователя не существует'
+                            send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'данж'):
+                    if check_dange_floor(user_id) == 0:
                         if not check_sleep(user_id):
                             if is_alive(user_id):
                                 if not in_expedition(user_id):
                                     if not is_working(user_id):
-                                        pvp_fight(user_id, enemy_id, peer_id)
-                                        drop_enemy_id(user_id, enemy_id)
+                                        answer = 'Данж | Вы уверены? Поход в данж будет стоить вам 7 единиц энергии'
+                                        text_for_buttons = ['/точно зайти в данж']
+                                        send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                                     else:
                                         answer = "Ваш персонаж работает"
                                         send_message(peer_id=peer_id, text=answer)
@@ -1827,98 +1929,83 @@ def index(msg, user_id, peer_id):
                         else:
                             answer = 'Ваш персонаж отдыхает!'
                             send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = f'Вас никто не вызывал на дуэль!'
-                        send_message(peer_id=peer_id, text=answer)
 
-                elif '/дуэль отклонить' in msg.lower():
-                    enemy_id = find_enemy(user_id)
-                    if enemy_id:
-                        answer = f'Вы отклонили дуэль'
-                        drop_enemy_id(user_id, enemy_id)
-                        send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = f'Вас никто не вызывал на дуэль!'
-                        send_message(peer_id=peer_id, text=answer)
-
-                elif '/дуэль отозвать' in msg.lower():
-                    if check_enemy_id(user_id):
-                        drop_enemy_id(user_id)
-                        answer = 'Вы отозвали дуэль!'
-                        send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Вы никого не вызывали на дуэль!'
-                        send_message(peer_id=peer_id, text=answer)
-
-                else:
-
-                    try:
-                        enemy_id = int(msg.lower().split('/дуэль')[1].strip().split('|')[0][3:])
-                    except:
-                        enemy_id = None
-
-                    if enemy_id:
-                        if is_exists(enemy_id):
-                            if not check_enemy_id(user_id):
-                                if not check_enemy_id(enemy_id):
-                                    if not find_enemy(user_id):
-                                        if not find_enemy(enemy_id):
-                                            if enemy_id != user_id:
-                                                if not check_sleep(user_id):
-                                                    if is_alive(enemy_id):
-                                                        if is_alive(user_id):
-                                                            if not in_expedition(user_id):
-                                                                if not is_working(user_id):
-                                                                    choose_enemy(user_id, enemy_id)
-                                                                    answer = f'Вы бросили вызов игроку @id{enemy_id}'
-                                                                    text_for_buttons = ['/Дуэль принять', '/Дуэль отклонить']
-                                                                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                                                                else:
-                                                                    answer = "Ваш персонаж работает"
-                                                                    send_message(peer_id=peer_id, text=answer)
-                                                            else:
-                                                                answer = "Ваш персонаж находится в экспедиции"
-                                                                send_message(peer_id=peer_id, text=answer)
-                                                        else:
-                                                            answer = 'Ваш персонаж мертв!'
-                                                            send_message(peer_id=peer_id, text=answer)
-                                                    else:
-                                                        answer = 'Ты с трупом собрался сражаться?...'
-                                                        send_message(peer_id=peer_id, text=answer)
-                                                else:
-                                                    answer = 'Ваш персонаж отдыхает!'
-                                                    send_message(peer_id=peer_id, text=answer)
-                                            else:
-                                                answer = 'Ты больной?'
-                                                send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'точно зайти в данж'):
+                    if check_dange_floor(user_id) == 0:
+                        if not check_sleep(user_id):
+                            if is_alive(user_id):
+                                if not in_expedition(user_id):
+                                    if not is_working(user_id):
+                                        if check_energy(user_id, 7):
+                                            enter_dange(user_id)
+                                            answer = f'Вы зашли в данж! В какую дверь пройдете?'
+                                            text_for_buttons = ['Левую', 'Центральную', 'Правую', '/выйти из данжа']
+                                            send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                                         else:
-                                            answer = 'Ваш соперник уже участвует в дуэли!'
-                                            send_message(peer_id=peer_id, text=answer)        
+                                            answer = f'У вас не хватает энергии!'
+                                            send_message(peer_id=user_id, text=answer)
                                     else:
-                                        answer = 'Вы уже участвуете в дуэли!'
-                                        send_message(peer_id=peer_id, text=answer)            
+                                        answer = "Ваш персонаж работает"
+                                        send_message(peer_id=peer_id, text=answer)
                                 else:
-                                    answer = 'Ваш соперник уже участвует в дуэли!'
+                                    answer = "Ваш персонаж находится в экспедиции"
                                     send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Вы уже участвуете в дуэли!'
+                                answer = 'Ваш персонаж мертв!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'Данного пользователя не существует'
+                            answer = 'Ваш персонаж отдыхает!'
+                            send_message(peer_id=peer_id, text=answer)
+
+
+                elif clear_msg(msg, 'контракты'):
+                    if user_id != peer_id:
+                        if get_time_to_recreate_contracts(peer_id):
+                            create_conversation_contracts(peer_id)
+                        contracts_info = show_contracts(peer_id)
+                        text_for_buttons = contracts_info['text_for_buttons']
+                        answer = contracts_info['show_case']
+                        if text_for_buttons:
+                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Данного пользователя не существует'
+                        answer = 'Контракты доступны только в беседе'
                         send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'данж'):
-                if check_dange_floor(user_id) == 0:
+                elif '/напасть' in msg.lower():
                     if not check_sleep(user_id):
                         if is_alive(user_id):
                             if not in_expedition(user_id):
                                 if not is_working(user_id):
-                                    answer = 'Данж | Вы уверены? Поход в данж будет стоить вам 7 единиц энергии'
-                                    text_for_buttons = ['/точно зайти в данж']
-                                    send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                                    list_with_monsters = get_conversation_contracts(peer_id)
+                                    monsters_name = []
+                                    for monster in list_with_monsters:
+                                        monsters_name.append(monster['name'].lower())
+
+                                    target_name = msg.lower().split('/напасть')[1][1:]
+
+                                    if target_name in monsters_name:
+                                        if check_energy(user_id, 3):
+                                            player_inf = get_stats(user_id)
+                                            player_mult = get_stat_multiply(player_inf["class"])
+
+                                            player = create_class(get_subclasses_name(user_id, False))
+                                            player.get_state(player_inf, player_mult)
+
+                                            monster_inf = get_monsters(target_name, False)
+
+                                            monsters = generate_contract(player.lvl, monster_inf)
+
+                                            alive = monster_fight(player, monsters, peer_id, user_id, contract=True)
+                                            searching_monster(user_id, False)
+                                        else:
+                                            answer = f'У вас не хватает энергии!'
+                                            send_message(peer_id=peer_id, text=answer)
+                                    else:
+                                        answer = "Такого заказа не существует или же он вам не доступен"
+                                        send_message(peer_id=peer_id, text=answer)
+
                                 else:
                                     answer = "Ваш персонаж работает"
                                     send_message(peer_id=peer_id, text=answer)
@@ -1932,423 +2019,338 @@ def index(msg, user_id, peer_id):
                         answer = 'Ваш персонаж отдыхает!'
                         send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'точно зайти в данж'):
-                if check_dange_floor(user_id) == 0:
+                elif clear_msg(msg, 'экспедиция'):
+                    answer = 'Поход в экспедицию стоит 3 энергии. Вы уверены?'
+                    text_for_buttons = ['/отправиться в экспедицию']
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+
+                elif '/отправиться в экспедицию' in msg.lower():
                     if not check_sleep(user_id):
                         if is_alive(user_id):
                             if not in_expedition(user_id):
                                 if not is_working(user_id):
-                                    if check_energy(user_id, 7):
-                                        enter_dange(user_id)
-                                        answer = f'Вы зашли в данж! В какую дверь пройдете?'
-                                        text_for_buttons = ['Левую', 'Центральную', 'Правую', '/выйти из данжа']
-                                        send_message(peer_id=user_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                                    else:
-                                        answer = f'У вас не хватает энергии!'
-                                        send_message(peer_id=user_id, text=answer)
-                                else:
-                                    answer = "Ваш персонаж работает"
-                                    send_message(peer_id=peer_id, text=answer)
-                            else:
-                                answer = "Ваш персонаж находится в экспедиции"
-                                send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = 'Ваш персонаж мертв!'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Ваш персонаж отдыхает!'
-                        send_message(peer_id=peer_id, text=answer)
-
-
-            elif clear_msg(msg, 'контракты'):
-                if user_id != peer_id:
-                    if get_time_to_recreate_contracts(peer_id):
-                        create_conversation_contracts(peer_id)
-                    contracts_info = show_contracts(peer_id)
-                    text_for_buttons = contracts_info['text_for_buttons']
-                    answer = contracts_info['show_case']
-                    if text_for_buttons:
-                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                    else:
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Контракты доступны только в беседе'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif '/напасть' in msg.lower():
-                if not check_sleep(user_id):
-                    if is_alive(user_id):
-                        if not in_expedition(user_id):
-                            if not is_working(user_id):
-                                list_with_monsters = get_conversation_contracts(peer_id)
-                                monsters_name = []
-                                for monster in list_with_monsters:
-                                    monsters_name.append(monster['name'].lower())
-
-                                target_name = msg.lower().split('/напасть')[1][1:]
-
-                                if target_name in monsters_name:
                                     if check_energy(user_id, 3):
-                                        player_inf = get_stats(user_id)
-                                        player_mult = get_stat_multiply(player_inf["class"])
-    
-                                        player = create_class(get_subclasses_name(user_id, False))
-                                        player.get_state(player_inf, player_mult)
-    
-                                        monster_inf = get_monsters(target_name, False)
-    
-                                        monsters = generate_contract(player.lvl, monster_inf)
-    
-                                        alive = monster_fight(player, monsters, peer_id, user_id, contract=True)
-                                        searching_monster(user_id, False)
+                                        go_to_expedition(user_id)
+                                        answer = 'Ваш персонаж отправился в экспедицию! Завершить ее вы сможете только через час'
+                                        send_message(peer_id=peer_id, text=answer)
                                     else:
                                         answer = f'У вас не хватает энергии!'
                                         send_message(peer_id=peer_id, text=answer)
                                 else:
-                                    answer = "Такого заказа не существует или же он вам не доступен"
+                                    answer = "Ваш персонаж работает"
                                     send_message(peer_id=peer_id, text=answer)
-                                
                             else:
-                                answer = "Ваш персонаж работает"
+                                answer = "Ваш персонаж находится в экспедиции"
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = "Ваш персонаж находится в экспедиции"
+                            answer = 'Ваш персонаж мертв!'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Ваш персонаж мертв!'
+                        answer = 'Ваш персонаж отдыхает!'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Ваш персонаж отдыхает!'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'экспедиция'):
-                answer = 'Поход в экспедицию стоит 3 энергии. Вы уверены?'
-                text_for_buttons = ['/отправиться в экспедицию']
-                send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                elif '/перевести кроны' in msg.lower():
+                    try:
+                        recipient = int(msg.lower().split('/перевести кроны')[1].split('|')[0].strip()[3:])
+                        value = int(msg.lower().split('/перевести кроны')[1].split('-')[-1].strip())
+                    except:
+                        recipient = None
+                        value = None
 
-            elif '/отправиться в экспедицию' in msg.lower():
-                if not check_sleep(user_id):
-                    if is_alive(user_id):
-                        if not in_expedition(user_id):
-                            if not is_working(user_id):
-                                if check_energy(user_id, 3):
-                                    go_to_expedition(user_id)
-                                    answer = 'Ваш персонаж отправился в экспедицию! Завершить ее вы сможете только через час'
+                    user_money = get_hero_info(user_id)['money']
+                    if recipient:
+                        if is_exists(recipient):
+                            if value <= user_money:
+                                if user_id != recipient:
+                                    send_money(user_id, recipient, value)
+                                    answer = f'Вы успешно перевели {value} крон игроку @id{recipient}'
                                     send_message(peer_id=peer_id, text=answer)
                                 else:
-                                    answer = f'У вас не хватает энергии!'
+                                    answer = 'Какой прок от этого?...'
                                     send_message(peer_id=peer_id, text=answer)
-                            else:
-                                answer = "Ваш персонаж работает"
-                                send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = "Ваш персонаж находится в экспедиции"
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Ваш персонаж мертв!'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Ваш персонаж отдыхает!'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif '/перевести кроны' in msg.lower():
-                try:
-                    recipient = int(msg.lower().split('/перевести кроны')[1].split('|')[0].strip()[3:])
-                    value = int(msg.lower().split('/перевести кроны')[1].split('-')[-1].strip())
-                except:
-                    recipient = None
-                    value = None
-
-                user_money = get_hero_info(user_id)['money']
-                if recipient:
-                    if is_exists(recipient):
-                        if value <= user_money:
-                            if user_id != recipient:
-                                send_money(user_id, recipient, value)
-                                answer = f'Вы успешно перевели {value} крон игроку @id{recipient}'
-                                send_message(peer_id=peer_id, text=answer)
-                            else:
-                                answer = 'Какой прок от этого?...'
-                                send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = 'У вас недостаточно средств'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Такого игрока не существует'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Такого игрока не существует'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'таверна'):
-                tip = ['Сегодня у нас пиво за пол цены!',
-                       'Самое свежее молоко только у нас!',
-                       'У нас есть отличный стейк из катоблепаса',
-                       'Где-то я уже видел твоё лицо...',
-                       'У меня есть новый анекдот !' + '\n' + 'Чернокнижнику приснилось, что он выиграл на скачках 5 тысяч крон, '
-                                                              'но даже во сне он умудрился пропить эти деньги до того, как проснулся.' + '\n' + 'Не смешно? Уже слышал?',
-
-                       'Хочешь историю ?' + '\n' + 'У меня есть один очень странный клиент, который каждый раз ничего не заказывает, а только спрашивает про новые анекдоты...',
-                       'Анекдот!' + '\n' + 'Попали как-то на необитаемый остров странствуйщий рыцарь, чародейки-самоучка и чернокнижник...',
-                       'Ещё один анекдот!' + '\n' + 'Чтобы перебить запах перегара от чернокнижника, попросите его разуться',
-                       'Те наёмники за крайним столиком очень странно на тебя смотрят.',
-                       'Когда я был таким же искателем приключений, но однажды орчья стрела пробила мне колено.',
-                       'Вы бы плащ хотя-бы сняли...']
-                tip_answer = 'Что будете пить? ' + random.choice(tip) + '\n' + '\n'
-                answer, text_for_buttons = show_tavern()
-                send_message(peer_id=peer_id, text= tip_answer + answer, keyboard=create_keyboard(text_for_buttons))
-
-            elif '/выпить' in msg.lower():
-                try:
-                    drink = msg.lower().split('/выпить')[1].strip()
-                except:
-                    drink = None
-
-                drink_info = get_drinks(by_name=True, name=drink)
-                if drink_info:
-                    user_money = get_hero_info(user_id)['money']
-                    if user_money >= drink_info['cost']:
-                        add_money(user_id, -drink_info['cost'])
-                        add_energy(user_id, drink_info['energy'])
-                        answer = f'Вы заплатили {drink_info["cost"]} крон и с удовольствием выпили {drink.title()}, восполнив {drink_info["energy"]} энергии!'
-                        send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'У вас недостаточно средств'
-                        send_message(peer_id=peer_id, text=answer)
-
-                else:
-                    answer = 'Такого напитка не сущетсвует'
-                    send_message(peer_id=peer_id, text= answer)
-
-            elif clear_msg(msg, 'рыбалка'):
-                reset_fish_time(user_id)
-                answer, text_for_buttons = show_fishing(user_id)
-                if text_for_buttons:
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'приобрести удочку'):
-                if get_hero_info(user_id)['money'] >= 260:
-                    if buy_fish_rod(user_id):
-                        answer = 'Вы успешно приобрели удочку!'
-                        send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'У вас уже есть удочка'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'У вас недостаточно средств'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif clear_msg(msg, 'начать рыбалку'):
-                if get_fishing_info(user_id)['fish_rod'] == 1:
-                    if check_fish_try(user_id):
-                        if check_energy(user_id, 1):
-                            fishing(user_id, peer_id)
-                            spend_fish_count(user_id)
-                        else:                    
-                            answer = 'У вас недостаточно энергии'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Думаю, на сегодня хватит рыбалки'
-                        send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'У вас нет удочки'
-                    send_message(peer_id=peer_id, text=answer)
-
-            elif '/рулетка' in msg.lower():
-
-                try:
-                    color = msg.lower().split('/рулетка')[1].strip().split('-')[0].strip().lower()
-                except:
-                    color = None
-                try:
-                    bet = int(msg.lower().split('/рулетка')[1].strip().split('-')[1].strip())
-                except:
-                    bet = None
-
-                if color in ['красное', 'черное', 'зеленое']:
-                    if bet:
-                        if bet >= 5:
-                            if bet <= get_hero_info(user_id)['money']:
-                                roulette(peer_id, user_id, color, bet)
                             else:
                                 answer = 'У вас недостаточно средств'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'Минимальная ставка 5 крон!'
+                            answer = 'Такого игрока не существует'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Вы указали некорректную ставку'
+                        answer = 'Такого игрока не существует'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Такого цвета не существует'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'работа'):
-                if get_time_to_recreate_jobs(user_id):
-                    create_personal_list_jobs(user_id)
-                jobs_info = show_jobs(user_id)
-                text_for_buttons = jobs_info['text_for_buttons']
-                answer = jobs_info['show_case']
-                if text_for_buttons:
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
-                else:
-                    send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'таверна'):
+                    tip = ['Сегодня у нас пиво за пол цены!',
+                           'Самое свежее молоко только у нас!',
+                           'У нас есть отличный стейк из катоблепаса',
+                           'Где-то я уже видел твоё лицо...',
+                           'У меня есть новый анекдот !' + '\n' + 'Чернокнижнику приснилось, что он выиграл на скачках 5 тысяч крон, '
+                                                                  'но даже во сне он умудрился пропить эти деньги до того, как проснулся.' + '\n' + 'Не смешно? Уже слышал?',
 
-            elif '/работать' in msg.lower():
+                           'Хочешь историю ?' + '\n' + 'У меня есть один очень странный клиент, который каждый раз ничего не заказывает, а только спрашивает про новые анекдоты...',
+                           'Анекдот!' + '\n' + 'Попали как-то на необитаемый остров странствуйщий рыцарь, чародейки-самоучка и чернокнижник...',
+                           'Ещё один анекдот!' + '\n' + 'Чтобы перебить запах перегара от чернокнижника, попросите его разуться',
+                           'Те наёмники за крайним столиком очень странно на тебя смотрят.',
+                           'Когда я был таким же искателем приключений, но однажды орчья стрела пробила мне колено.',
+                           'Вы бы плащ хотя-бы сняли...']
+                    tip_answer = 'Что будете пить? ' + random.choice(tip) + '\n' + '\n'
+                    answer, text_for_buttons = show_tavern()
+                    send_message(peer_id=peer_id, text= tip_answer + answer, keyboard=create_keyboard(text_for_buttons))
 
-                try:
-                    job_name = msg.lower().split('/работать')[1].strip()
-                except:
-                    job_name = None
+                elif '/выпить' in msg.lower():
+                    try:
+                        drink = msg.lower().split('/выпить')[1].strip()
+                    except:
+                        drink = None
 
-                if get_time_to_recreate_jobs(user_id):
-                    create_personal_list_jobs(user_id)
+                    drink_info = get_drinks(by_name=True, name=drink)
+                    if drink_info:
+                        user_money = get_hero_info(user_id)['money']
+                        if user_money >= drink_info['cost']:
+                            add_money(user_id, -drink_info['cost'])
+                            add_energy(user_id, drink_info['energy'])
+                            answer = f'Вы заплатили {drink_info["cost"]} крон и с удовольствием выпили {drink.title()}, восполнив {drink_info["energy"]} энергии!'
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'У вас недостаточно средств'
+                            send_message(peer_id=peer_id, text=answer)
 
-                current_job = get_job_by_name(user_id, job_name)
-                job_id = current_job['job_id']
+                    else:
+                        answer = 'Такого напитка не сущетсвует'
+                        send_message(peer_id=peer_id, text= answer)
 
-                if current_job:
-                    hero_stats = get_stats(user_id)
-                    if hero_stats['strength'] >= current_job['need_strength'] and hero_stats['agility'] >= current_job['need_agility'] and hero_stats['intellect'] >= current_job['need_intellect'] and hero_stats['luck'] >= current_job['need_luck']:
-                        if is_alive(user_id):
-                            if not in_expedition(user_id):
-                                if not check_sleep(user_id):
-                                    if not is_working(user_id):
-                                        if check_energy(user_id, 2):
-                                            go_to_job(user_id, job_id)
-                                            answer = 'Вы отправились на работу. Рабочий день вы сможете закончить только через 2 часа'
-                                            send_message(peer_id=peer_id, text=answer)
-                                        else:
-                                            answer = 'У вас недостаточно энергии'
-                                            send_message(peer_id=peer_id, text=answer)
-                                    else:
-                                        answer = 'Вы уже на работе'
-                                        send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'рыбалка'):
+                    reset_fish_time(user_id)
+                    answer, text_for_buttons = show_fishing(user_id)
+                    if text_for_buttons:
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                    else:
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'приобрести удочку'):
+                    if get_hero_info(user_id)['money'] >= 260:
+                        if buy_fish_rod(user_id):
+                            answer = 'Вы успешно приобрели удочку!'
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'У вас уже есть удочка'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'У вас недостаточно средств'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'начать рыбалку'):
+                    if get_fishing_info(user_id)['fish_rod'] == 1:
+                        if check_fish_try(user_id):
+                            if check_energy(user_id, 1):
+                                fishing(user_id, peer_id)
+                                spend_fish_count(user_id)
+                            else:
+                                answer = 'У вас недостаточно энергии'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Думаю, на сегодня хватит рыбалки'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'У вас нет удочки'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/рулетка' in msg.lower():
+
+                    try:
+                        color = msg.lower().split('/рулетка')[1].strip().split('-')[0].strip().lower()
+                    except:
+                        color = None
+                    try:
+                        bet = int(msg.lower().split('/рулетка')[1].strip().split('-')[1].strip())
+                    except:
+                        bet = None
+
+                    if color in ['красное', 'черное', 'зеленое']:
+                        if bet:
+                            if bet >= 5:
+                                if bet <= get_hero_info(user_id)['money']:
+                                    roulette(peer_id, user_id, color, bet)
                                 else:
-                                    answer = 'Ваш персонаж отдыхает'
+                                    answer = 'У вас недостаточно средств'
                                     send_message(peer_id=peer_id, text=answer)
                             else:
-                                answer = 'Вы находитесь в экспедиции'
+                                answer = 'Минимальная ставка 5 крон!'
                                 send_message(peer_id=peer_id, text=answer)
                         else:
-                            answer = 'Как бы ты не хотел, но мертвым не поработаешь...'
+                            answer = 'Вы указали некорректную ставку'
                             send_message(peer_id=peer_id, text=answer)
                     else:
-                        answer = 'Вы не подходите для этой вакансии!'
+                        answer = 'Такого цвета не существует'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Такой вакансии не существует!'
-                    send_message(peer_id=peer_id, text=answer)
 
-            elif clear_msg(msg, 'завершить работу'):
-                if is_working(user_id):
-                    user_job_time = get_user_status(user_id)['end_job']
-                    delta = user_job_time - datetime.datetime.now()
-                    seconds = delta.seconds
-                    days = delta.days
-
-                    if seconds > 7200 or days < 0:
-                        answer = choose_job_event(user_id)
-                        end_job(user_id)
-                        send_message(peer_id=peer_id, text=answer)
+                elif clear_msg(msg, 'работа'):
+                    if get_time_to_recreate_jobs(user_id):
+                        create_personal_list_jobs(user_id)
+                    jobs_info = show_jobs(user_id)
+                    text_for_buttons = jobs_info['text_for_buttons']
+                    answer = jobs_info['show_case']
+                    if text_for_buttons:
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
                     else:
-                        remaining_time = strftime("%H:%M", gmtime(seconds))
-                        answer = f'Еще рано. До конца работы осталось {remaining_time}'
                         send_message(peer_id=peer_id, text=answer)
-                else:
-                    answer = 'Вы не на работе'
+
+                elif '/работать' in msg.lower():
+
+                    try:
+                        job_name = msg.lower().split('/работать')[1].strip()
+                    except:
+                        job_name = None
+
+                    if get_time_to_recreate_jobs(user_id):
+                        create_personal_list_jobs(user_id)
+
+                    current_job = get_job_by_name(user_id, job_name)
+                    job_id = current_job['job_id']
+
+                    if current_job:
+                        hero_stats = get_stats(user_id)
+                        if hero_stats['strength'] >= current_job['need_strength'] and hero_stats['agility'] >= current_job['need_agility'] and hero_stats['intellect'] >= current_job['need_intellect'] and hero_stats['luck'] >= current_job['need_luck']:
+                            if is_alive(user_id):
+                                if not in_expedition(user_id):
+                                    if not check_sleep(user_id):
+                                        if not is_working(user_id):
+                                            if check_energy(user_id, 2):
+                                                go_to_job(user_id, job_id)
+                                                answer = 'Вы отправились на работу. Рабочий день вы сможете закончить только через 2 часа'
+                                                send_message(peer_id=peer_id, text=answer)
+                                            else:
+                                                answer = 'У вас недостаточно энергии'
+                                                send_message(peer_id=peer_id, text=answer)
+                                        else:
+                                            answer = 'Вы уже на работе'
+                                            send_message(peer_id=peer_id, text=answer)
+                                    else:
+                                        answer = 'Ваш персонаж отдыхает'
+                                        send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Вы находитесь в экспедиции'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Как бы ты не хотел, но мертвым не поработаешь...'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Вы не подходите для этой вакансии!'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Такой вакансии не существует!'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'завершить работу'):
+                    if is_working(user_id):
+                        user_job_time = get_user_status(user_id)['end_job']
+                        delta = user_job_time - datetime.datetime.now()
+                        seconds = delta.seconds
+                        days = delta.days
+
+                        if seconds > 7200 or days < 0:
+                            answer = choose_job_event(user_id)
+                            end_job(user_id)
+                            send_message(peer_id=peer_id, text=answer)
+                        else:
+                            remaining_time = strftime("%H:%M", gmtime(seconds))
+                            answer = f'Еще рано. До конца работы осталось {remaining_time}'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'Вы не на работе'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif clear_msg(msg, 'регистрация'):
+                    answer = 'Вы уже зарегистрированы!'
                     send_message(peer_id=peer_id, text=answer)
-                           
-            elif clear_msg(msg, 'регистрация'):     
-                answer = 'Вы уже зарегистрированы!'
-                send_message(peer_id=peer_id, text=answer)    
+
+                elif is_admin(user_id):
+
+                    if '/пополнить баланс' in msg.lower():
+
+                        try:
+                            recipient = int(msg.lower().split('/пополнить баланс')[1].split('|')[0].strip()[3:])
+                            value = int(msg.lower().split('/пополнить баланс')[1].split('-')[-1].strip())
+                        except:
+                            recipient = None
+                            value = None
+
+                        if recipient:
+                            if is_exists(recipient):
+                                if value:
+                                    add_money(recipient, value)
+                                    answer = f'Вы успешно пополнили счет игрока @id{recipient} на {value} крон'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Укажите валидное число крон!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Такого игрока не существует'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    elif '/добавить энергии' in msg.lower():
+
+                        try:
+                            recipient = int(msg.lower().split('/добавить энергии')[1].split('|')[0].strip()[3:])
+                            value = int(msg.lower().split('/добавить энергии')[1].split('-')[-1].strip())
+                        except:
+                            recipient = None
+                            value = None
+
+                        if recipient:
+                            if is_exists(recipient):
+                                if value:
+                                    add_energy(recipient, value)
+                                    answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value}'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Укажите валидное число энергии!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Такого игрока не существует'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+
+                    elif '/вручить сундук' in msg.lower():
+
+                        try:
+                            recipient = int(msg.lower().split('/вручить сундук')[1].split('|')[0].strip()[3:])
+                            treasure_num = int(msg.lower().split('/вручить сундук')[1].split('-')[-1].strip())
+                        except:
+                            recipient = None
+                            treasure_num = None
+
+                        if recipient:
+                            if is_exists(recipient):
+                                if treasure_num in [1, 2, 3, 4, 5]:
+                                    give_treasure(recipient, treasure_num)
+                                    answer = f'Вы успешно дали игроку @id{recipient} сундук!'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Такого сундука не существует!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Такого игрока не существует'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+
+        elif not is_exists(user_id) and '/' in msg:
+            answer = 'Вы не зарегистрированны!'
+            send_message(peer_id=peer_id, text=answer)
+
+        if new_lvl(user_id):
+            answer = f'Поздравляю, вы достигли {lvl_up(user_id)} уровень!'
+            send_message(peer_id=peer_id, text=answer)
             
-            elif is_admin(user_id):
-                
-                if '/пополнить баланс' in msg.lower():
-
-                    try:
-                        recipient = int(msg.lower().split('/пополнить баланс')[1].split('|')[0].strip()[3:])
-                        value = int(msg.lower().split('/пополнить баланс')[1].split('-')[-1].strip())
-                    except:
-                        recipient = None
-                        value = None
-
-                    if recipient:
-                        if is_exists(recipient):
-                            if value:
-                                add_money(recipient, value)
-                                answer = f'Вы успешно пополнили счет игрока @id{recipient} на {value} крон'
-                                send_message(peer_id=peer_id, text=answer)
-                            else:
-                                answer = 'Укажите валидное число крон!'
-                                send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = 'Такого игрока не существует'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Такого игрока не существует'
-                        send_message(peer_id=peer_id, text=answer)
-
-                elif '/добавить энергии' in msg.lower():
-
-                    try:
-                        recipient = int(msg.lower().split('/добавить энергии')[1].split('|')[0].strip()[3:])
-                        value = int(msg.lower().split('/добавить энергии')[1].split('-')[-1].strip())
-                    except:
-                        recipient = None
-                        value = None
-
-                    if recipient:
-                        if is_exists(recipient):
-                            if value:
-                                add_energy(recipient, value)
-                                answer = f'Вы успешно пополнили энергию игрока @id{recipient} на {value}'
-                                send_message(peer_id=peer_id, text=answer)
-                            else:
-                                answer = 'Укажите валидное число энергии!'
-                                send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = 'Такого игрока не существует'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Такого игрока не существует'
-                        send_message(peer_id=peer_id, text=answer)
-
-                elif '/вручить сундук' in msg.lower():
-                    
-                    try:
-                        recipient = int(msg.lower().split('/вручить сундук')[1].split('|')[0].strip()[3:])
-                        treasure_num = int(msg.lower().split('/вручить сундук')[1].split('-')[-1].strip())
-                    except:
-                        recipient = None
-                        treasure_num = None
-                    
-                    if recipient:
-                        if is_exists(recipient):
-                            if treasure_num in [1, 2, 3, 4, 5]:
-                                give_treasure(recipient, treasure_num)
-                                answer = f'Вы успешно дали игроку @id{recipient} сундук!'
-                                send_message(peer_id=peer_id, text=answer)
-                            else:
-                                answer = 'Такого сундука не существует!'
-                                send_message(peer_id=peer_id, text=answer)
-                        else:
-                            answer = 'Такого игрока не существует'
-                            send_message(peer_id=peer_id, text=answer)
-                    else:
-                        answer = 'Такого игрока не существует'
-                        send_message(peer_id=peer_id, text=answer)
-
-    elif not is_exists(user_id) and '/' in msg:
-        answer = 'Вы не зарегистрированны!'
-        send_message(peer_id=peer_id, text=answer)
-    
-    if new_lvl(user_id):
-        answer = f'Поздравляю, вы достигли {lvl_up(user_id)} уровень!'
-        send_message(peer_id=peer_id, text=answer)
+    except:
+        send_message(peer_id=peer_id, text="Для регистрации нужно написать боту в личные сообщения "
+                                           "- https://vk.com/club203434371")
 
 
 def bot_side():
