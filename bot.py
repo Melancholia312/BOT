@@ -1381,7 +1381,7 @@ def index(msg, user_id, peer_id):
                                      'потеряная шкатулка': 4,
                                      'бутылка с письмом': 5}
                 try:
-                    treausre_name = msg.split('/открыть')[1].lower().strip()
+                    treausre_name = msg.lower().split('/открыть')[1].strip()
                 except:
                     treausre_name = None
 
@@ -1524,7 +1524,7 @@ def index(msg, user_id, peer_id):
 
             elif '/снять с продажи' in msg.lower():
                 try:
-                    auction_id = int(msg.split('/снять с продажи')[1][1:])
+                    auction_id = int(msg.lower().split('/снять с продажи')[1][1:])
                 except:
                     auction_id = None
 
@@ -2295,8 +2295,8 @@ def index(msg, user_id, peer_id):
                 elif '/добавить энергии' in msg.lower():
 
                     try:
-                        recipient = int(msg.split('/добавить энергии')[1].split('|')[0].strip()[3:])
-                        value = int(msg.split('/добавить энергии')[1].split('-')[-1].strip())
+                        recipient = int(msg.lower().split('/добавить энергии')[1].split('|')[0].strip()[3:])
+                        value = int(msg.lower().split('/добавить энергии')[1].split('-')[-1].strip())
                     except:
                         recipient = None
                         value = None
@@ -2320,8 +2320,8 @@ def index(msg, user_id, peer_id):
                 elif '/вручить сундук' in msg.lower():
                     
                     try:
-                        recipient = int(msg.split('/вручить сундук')[1].split('|')[0].strip()[3:])
-                        treasure_num = int(msg.split('/вручить сундук')[1].split('-')[-1].strip())
+                        recipient = int(msg.lower().split('/вручить сундук')[1].split('|')[0].strip()[3:])
+                        treasure_num = int(msg.lower().split('/вручить сундук')[1].split('-')[-1].strip())
                     except:
                         recipient = None
                         treasure_num = None
