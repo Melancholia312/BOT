@@ -179,7 +179,7 @@ def monster_fight(player, monsters, peer_id, user_id, contract=False):
         if contract:
             complete_contract(peer_id, monsters[0].name)
         m_exp = add_exp(user_id, exp)
-        m_money = add_money(user_id, money)
+        m_money = add_money(user_id, money, with_mul=True)
         log += "+"+str(m_exp) + " опыта" + "\n"
         log += "+"+str(m_money) + " крон" + "\n"
     else:
@@ -424,7 +424,7 @@ def dange_stage_event(user_id, stage):
         log += player_name + ': ' + 'Сокровища!' + "\n"
         log += "Перед вами " + rich_description[chance % len(rich_description)] + ".\n"
         money_reward = chance * 2 + stage * 15
-        money_reward = add_money(user_id, money_reward)
+        money_reward = add_money(user_id, money_reward, with_mul=True)
         log += "+" + str(money_reward) + ' Крон' + '\n'
         send_message(peer_id=user_id, text=log)
 
@@ -966,7 +966,7 @@ def fishing(user_id, peer_id):
             result = f'Вам попалась {random_fish} - {kg} кг!' + '\n' + f'На рынке за нее дадут {cost} крон'
         else:
             result = f'Вам попался {random_fish} - {kg} кг!' + '\n' + f'На рынке за него дадут {cost} крон'
-        add_money(user_id, cost)
+        add_money(user_id, cost, with_mul=True)
         send_message(peer_id=peer_id, text=result)
 
     elif event == 2:
@@ -981,7 +981,7 @@ def fishing(user_id, peer_id):
                 send_message(peer_id=peer_id, text=f'Вы выловили {item_name}')
             else:
                 answer = 'Валовленный вами предмет не поместился в рюкзаке и вы отдали его рыбаку, сидевшего рядом, за 50 крон'
-                add_money(user_id, 50)
+                add_money(user_id, 50, with_mul=True)
                 send_message(peer_id=peer_id, text=answer)
 
         elif chance > 10:
@@ -990,7 +990,7 @@ def fishing(user_id, peer_id):
                 send_message(peer_id=peer_id, text=f'Вы выловили {item_name}')
             else:
                 answer = 'Валовленный вами предмет не поместился в рюкзаке и вы отдали его рыбаку, сидевшего рядом, за 100 крон'
-                add_money(user_id, 100)
+                add_money(user_id, 100, with_mul=True)
                 send_message(peer_id=peer_id, text=answer)
 
     elif event == 3:
@@ -1021,7 +1021,7 @@ def fishing(user_id, peer_id):
             money_phrases = ['🐠:Хочешь дворец, вечную жизнь? Или может быть виллу у моря? Ахахахахах' + '\n' + 'Вот держи!',
                              '🐠: Сегодня я в хорошем настроение. Так что держи.',
                              '🐠: Пам, пам, пам... На барабане сектор "Утешительный приз" !']
-            money = add_money(user_id, random.randint(50, 150))
+            money = add_money(user_id, random.randint(50, 150), with_mul=True)
             send_message(peer_id=peer_id, text=random.choice(money_phrases) + '\n' + f'+{money} крон')
 
     else:
