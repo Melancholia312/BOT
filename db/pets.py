@@ -202,4 +202,14 @@ def change_pet_name(user_id, pet_name):
             connect.commit()
     finally:
         connect.close()
+        
+        
+def let_go_pet(user_id):
+    connect = get_connect()
+    try:
+        with connect.cursor() as cursor:
+            cursor.execute(f"DELETE FROM pets WHERE owner_id={user_id} ")
+            connect.commit()
+    finally:
+        connect.close() 
 
