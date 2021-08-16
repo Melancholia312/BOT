@@ -320,13 +320,225 @@ def event_sleep(user_id):
             cursor.execute(f"SELECT exp FROM users "
                            f"WHERE user_id={user_id} ")
             exp = cursor.fetchone()['exp']
-            exp += 2
+            exp += 3
             cursor.execute(f"UPDATE users SET exp={exp} "
                            f"WHERE user_id={user_id} ")
-            connect.commit()
-            return 'Вы заснули на опушке леса.' + '\n' + \
-                   '+2 опыт'
+            answer = 'Вы заснули на опушке леса.' + '\n' + \
+                     '+3 опыта' + '\n' + '~~~~~~~~' + '\n'
 
+            cursor.execute(f'SELECT id FROM pets '
+                           f'WHERE owner_id={user_id} ')
+            pet = cursor.fetchone()
+            chance = random.randint(1, 100)
+            if not pet and chance < 25:
+                random_event = [1,2]
+                random_event = random.choice(random_event)
+                if random_event == 1:
+                    answer += 'Вы проснулись от странного шороха, похоже кто-то решил полакомится вашими запасами.' + '\n'
+                    answer += 'Вы аккуратно заглянули в сумку...' + '\n'
+                    answer += 'Там сидел белый кролик!' + '\n' + '\n'
+                    answer += 'Теперь у вас появился новый питомец.'
+                    pet_id = 5
+                else:
+                    pet_id = 7
+                    answer += 'Вы проснулись от ощущения тяжести. Похоже дикий кот уснул у вас на груди. Теперь он домашний.'
+
+                cursor.execute(f"INSERT INTO pets(owner_id, type, name) "
+                               f"VALUES ({user_id}, {pet_id}, 'Без клички') ")
+
+                cursor.execute(f'SELECT * FROM pets_stats '
+                               f'WHERE id={pet_id} ')
+                pets_stats = cursor.fetchone()
+                if pets_stats['pet_func'] == 'default':
+                    add_to = pets_stats['add_to']
+                    add_how_many = pets_stats['add_how_many']
+
+                    cursor.execute(f'SELECT {add_to} FROM users '
+                                   f'WHERE user_id={user_id} ')
+                    hero_stat = cursor.fetchone()[add_to]
+                    new_hero_stat = hero_stat + add_how_many
+
+                    cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                                   f"WHERE user_id={user_id}")
+
+            connect.commit()
+            return answer
     finally:
         connect.close()
 
+
+def merchant(user_id):
+    connect = get_connect()
+    try:
+        with connect.cursor() as cursor:
+            cursor.execute(f"SELECT exp, money FROM users "
+                           f"WHERE user_id={user_id} ")
+            hero_info = cursor.fetchone()
+            exp = hero_info['exp']
+            money = hero_info['money']
+            exp += 2
+            answer = 'На рынке вы увидели как местный купец или какой-то ' \
+                     'подозрительный тип или сапожник или путешественник в ' \
+                     'потрепаном костюме продаёт хорошую ездовую лошадь за 120 крон.' + '\n' + \
+                     '+2 опыта' + '\n' + '~~~~~~~~' + '\n'
+
+            cursor.execute(f'SELECT id FROM pets '
+                           f'WHERE owner_id={user_id} ')
+            pet = cursor.fetchone()
+            chance = random.randint(1, 100)
+
+            if not pet and money >= 120 and chance < 25:
+                answer += 'Недолго думаю, вы отдали деньги тому продавцу.' + '\n'
+                answer += 'Теперь у вас появилась лошадь!' + '\n'
+                answer += '-120 крон'
+                pet_id = 4
+                money -= 120
+                cursor.execute(f"INSERT INTO pets(owner_id, type, name) "
+                               f"VALUES ({user_id}, {pet_id}, 'Без клички') ")
+
+                cursor.execute(f'SELECT * FROM pets_stats '
+                               f'WHERE id={pet_id} ')
+                pets_stats = cursor.fetchone()
+                if pets_stats['pet_func'] == 'default':
+                    add_to = pets_stats['add_to']
+                    add_how_many = pets_stats['add_how_many']
+
+                    cursor.execute(f'SELECT {add_to} FROM users '
+                                   f'WHERE user_id={user_id} ')
+                    hero_stat = cursor.fetchone()[add_to]
+                    new_hero_stat = hero_stat + add_how_many
+
+                    cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                                   f"WHERE user_id={user_id}")
+            else:
+                answer += 'Вы прошли мимо и сэкономили немного монет.' + '\n'
+                answer += '+2 опыта'
+                exp += 2
+
+            cursor.execute(f"UPDATE users SET exp={exp}, money={money} "
+                           f"WHERE user_id={user_id} ")
+
+            connect.commit()
+            return answer
+    finally:
+        connect.close()
+
+
+def chimera_nest(user_id):
+    connect = get_connect()
+    try:
+        with connect.cursor() as cursor:
+            cursor.execute(f"SELECT exp, money FROM users "
+                           f"WHERE user_id={user_id} ")
+            hero_info = cursor.fetchone()
+            exp = hero_info['exp']
+            money = hero_info['money']
+            exp += 2
+            earn_money = random.randint(10, 30)
+            money += earn_money
+            answer = 'Вы наткнулись на разоренное гнездо химеры.' + '\n' + \
+                     '+2 опыта' + '\n' + '~~~~~~~~' + '\n'
+
+            answer += 'В нем лежало несколько монет, кости и сундук странного вида.' + '\n'
+            answer += f'+{earn_money} крон' + '\n'
+            answer += '+Зачарованный сундук' + '\n' + '~~~~~~~~' + '\n'
+            treasure = f'treasure_{2}'
+            cursor.execute(f'SELECT {treasure} FROM users WHERE user_id={user_id}')
+            treasure_quantity = cursor.fetchone()[treasure] + 1
+            cursor.execute(f'UPDATE users SET {treasure}={treasure_quantity} '
+                           f'WHERE user_id={user_id}')
+
+            cursor.execute(f'SELECT id FROM pets '
+                           f'WHERE owner_id={user_id} ')
+            pet = cursor.fetchone()
+            chance = random.randint(1, 100)
+
+            if not pet and chance < 25:
+                answer += 'Растроенные тем, что кто-то вас опередил, вы швырнули самый большой мосол куда-то в даль.' + '\n' + '~~~~~~~~' + '\n'
+                answer += 'Через некоторое время прибежала собака с этим мослом в зубах. Похоже теперь у вас появился новый друг!'
+                pet_id = 3
+                cursor.execute(f"INSERT INTO pets(owner_id, type, name) "
+                               f"VALUES ({user_id}, {pet_id}, 'Без клички') ")
+
+                cursor.execute(f'SELECT * FROM pets_stats '
+                               f'WHERE id={pet_id} ')
+                pets_stats = cursor.fetchone()
+                if pets_stats['pet_func'] == 'default':
+                    add_to = pets_stats['add_to']
+                    add_how_many = pets_stats['add_how_many']
+
+                    cursor.execute(f'SELECT {add_to} FROM users '
+                                   f'WHERE user_id={user_id} ')
+                    hero_stat = cursor.fetchone()[add_to]
+                    new_hero_stat = hero_stat + add_how_many
+
+                    cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                                   f"WHERE user_id={user_id}")
+
+            cursor.execute(f"UPDATE users SET exp={exp}, money={money} "
+                           f"WHERE user_id={user_id} ")
+
+            connect.commit()
+            return answer
+    finally:
+        connect.close()
+
+
+def swamp(user_id):
+    connect = get_connect()
+    try:
+        with connect.cursor() as cursor:
+            cursor.execute(f"SELECT exp, intellect FROM users "
+                           f"WHERE user_id={user_id} ")
+            hero_info = cursor.fetchone()
+            exp = hero_info['exp']
+            intellect = hero_info['intellect']
+            exp += 3
+            answer = 'Заблудившись в лесу, вы наткнулись на болото.' + '\n' + 'Может быть там найдётся что-нибудь интересное ?' + '\n' + \
+                     '+3 опыта' + '\n' + '~~~~~~~~' + '\n'
+
+            cursor.execute(f'SELECT id FROM pets '
+                           f'WHERE owner_id={user_id} ')
+            pet = cursor.fetchone()
+            chance = random.randint(1, 100)
+
+            if not pet and chance < 25:
+                answer += 'Вы ничего не нашли. Как утешительный приз, вы решили забрать жабу.' + '\n' + 'Теперь у вас есть домашняя жаба!'
+                pet_id = 2
+                cursor.execute(f"INSERT INTO pets(owner_id, type, name) "
+                               f"VALUES ({user_id}, {pet_id}, 'Без клички') ")
+
+                cursor.execute(f'SELECT * FROM pets_stats '
+                               f'WHERE id={pet_id} ')
+                pets_stats = cursor.fetchone()
+                if pets_stats['pet_func'] == 'default':
+                    add_to = pets_stats['add_to']
+                    add_how_many = pets_stats['add_how_many']
+
+                    cursor.execute(f'SELECT {add_to} FROM users '
+                                   f'WHERE user_id={user_id} ')
+                    hero_stat = cursor.fetchone()[add_to]
+                    new_hero_stat = hero_stat + add_how_many
+
+                    cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                                   f"WHERE user_id={user_id}")
+
+            elif chance < 50:
+                answer += 'Не глубоко в воде лежала бутылка с запиской.' + '\n'
+                answer += '+ Бутылка с письмом'
+                treasure = f'treasure_{5}'
+                cursor.execute(f'SELECT {treasure} FROM users WHERE user_id={user_id}')
+                treasure_quantity = cursor.fetchone()[treasure] + 1
+                cursor.execute(f'UPDATE users SET {treasure}={treasure_quantity} '
+                               f'WHERE user_id={user_id}')
+            else:
+                answer += 'Вы ничего не нашли в этом противном болоте. Только зря испачкались...' + '\n' + '-1 интеллект'
+                intellect -= 1
+
+            cursor.execute(f"UPDATE users SET exp={exp}, intellect={intellect} "
+                           f"WHERE user_id={user_id} ")
+
+            connect.commit()
+            return answer
+    finally:
+        connect.close()
