@@ -185,6 +185,53 @@ def open_treasure(user_id, treasure_number):
                 connect.commit()
 
                 return 'Вы открыли Бутылку с письмом  и получили: ' + '\n' + f'+{earn_money} крон' + '\n' + f'+{earn_exp} опыта'
+            
+            elif treasure_number == 6:
 
+                cursor.execute(f'SELECT pet_name FROM pets '
+                               f'INNER JOIN pets_stats ON pets.type=pets_stats.id '
+                               f'WHERE owner_id={user_id} ')
+                user_pet = cursor.fetchone()
+                if not user_pet:
+                    cursor.execute(f'SELECT * FROM pets_stats')
+                    pets = cursor.fetchall()
+                    random_pet = random.choice(pets)
+                    random_pet_id = random_pet['id']
+                    random_pet_name = random_pet['pet_name']
+                    cursor.execute(f"INSERT INTO pets(owner_id, type, name) "
+                                   f"VALUES ({user_id}, {random_pet_id}, 'Без клички') ")
+
+                    cursor.execute(f'SELECT * FROM pets_stats '
+                                   f'WHERE id={random_pet_id} ')
+                    pets_stats = cursor.fetchone()
+                    if pets_stats['pet_func'] == 'default':
+                        add_to = pets_stats['add_to']
+                        add_how_many = pets_stats['add_how_many']
+
+                        cursor.execute(f'SELECT {add_to} FROM users '
+                                       f'WHERE user_id={user_id} ')
+                        hero_stat = cursor.fetchone()[add_to]
+                        new_hero_stat = hero_stat + add_how_many
+
+                        cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                                       f"WHERE user_id={user_id}")
+
+                        cursor.execute(f'UPDATE users SET {treasure}={user_treasure} '
+                                       f'WHERE user_id={user_id}')
+
+                        connect.commit()
+                        return 'Вы открыли Мяукающий мешок и получили: ' + '\n' + f'+{random_pet_name}'
+
+                else:
+                    earn_exp = random.randint(12, 17)
+                    earn_money = random.randint(300, 500)
+                    cursor.execute(f'UPDATE users SET money={user_money + earn_money}, '
+                                   f'exp={user_exp + earn_exp}, '
+                                   f'{treasure}={user_treasure} '
+                                   f'WHERE user_id={user_id}')
+                    connect.commit()
+
+                    return 'Вы открыли Мяукающий мешок и получили: ' + '\n' + f'+{earn_money} крон' + '\n' + f'+{earn_exp} опыта'
+            
     finally:
         connect.close()
