@@ -7,7 +7,7 @@ def get_user_treasures(user_id):
     try:
         with connect.cursor() as cursor:
             cursor.execute(f'SELECT treasure_1, treasure_2, '
-                           f'treasure_3, treasure_4, treasure_5 FROM users WHERE user_id={user_id}')
+                           f'treasure_3, treasure_4, treasure_5, treasure_6 FROM users WHERE user_id={user_id}')
             treasures = cursor.fetchone()
             return treasures
 
