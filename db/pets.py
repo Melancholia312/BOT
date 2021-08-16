@@ -212,10 +212,11 @@ def let_go_pet(user_id):
                            f'INNER JOIN pets_stats ON pets.type=pets_stats.id '
                            f'WHERE owner_id={user_id} ')
             pet_info = cursor.fetchone()
-            buff = pet_info['lvl'] // pet_info['lvl_buff'] + pet_info['add_how_many']
+       
 
             if pet_info['pet_func'] == 'default':
                 add_to = pet_info['add_to']
+                buff = pet_info['lvl'] // pet_info['lvl_buff'] + pet_info['add_how_many']
 
                 cursor.execute(f'SELECT {add_to} FROM users '
                                f'WHERE user_id={user_id} ')
