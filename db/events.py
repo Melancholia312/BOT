@@ -49,7 +49,7 @@ def go_to_expedition(user_id):
 
 
 def choose_event(user_id):
-    events = [old_carriage, black_cat, tavern, find_joke, event_sleep, find_murder, find_homeless, street_walk]
+    events = [old_carriage, black_cat, tavern, find_joke, event_sleep, find_murder, find_homeless, street_walk, merchant, chimera_nest, swamp]
     rand_func = random.choice(events)
     return rand_func(user_id)
 
@@ -330,7 +330,7 @@ def event_sleep(user_id):
                            f'WHERE owner_id={user_id} ')
             pet = cursor.fetchone()
             chance = random.randint(1, 100)
-            if not pet and chance < 25:
+            if not pet and chance < 35:
                 random_event = [1,2]
                 random_event = random.choice(random_event)
                 if random_event == 1:
@@ -387,7 +387,7 @@ def merchant(user_id):
             pet = cursor.fetchone()
             chance = random.randint(1, 100)
 
-            if not pet and money >= 120 and chance < 25:
+            if not pet and money >= 120 and chance < 35:
                 answer += 'Недолго думаю, вы отдали деньги тому продавцу.' + '\n'
                 answer += 'Теперь у вас появилась лошадь!' + '\n'
                 answer += '-120 крон'
@@ -453,7 +453,7 @@ def chimera_nest(user_id):
             pet = cursor.fetchone()
             chance = random.randint(1, 100)
 
-            if not pet and chance < 25:
+            if not pet and chance < 35:
                 answer += 'Растроенные тем, что кто-то вас опередил, вы швырнули самый большой мосол куда-то в даль.' + '\n' + '~~~~~~~~' + '\n'
                 answer += 'Через некоторое время прибежала собака с этим мослом в зубах. Похоже теперь у вас появился новый друг!'
                 pet_id = 3
@@ -502,7 +502,7 @@ def swamp(user_id):
             pet = cursor.fetchone()
             chance = random.randint(1, 100)
 
-            if not pet and chance < 25:
+            if not pet and chance < 35:
                 answer += 'Вы ничего не нашли. Как утешительный приз, вы решили забрать жабу.' + '\n' + 'Теперь у вас есть домашняя жаба!'
                 pet_id = 2
                 cursor.execute(f"INSERT INTO pets(owner_id, type, name) "
@@ -523,7 +523,7 @@ def swamp(user_id):
                     cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
                                    f"WHERE user_id={user_id}")
 
-            elif chance < 50:
+            elif chance < 60:
                 answer += 'Не глубоко в воде лежала бутылка с запиской.' + '\n'
                 answer += '+ Бутылка с письмом'
                 treasure = f'treasure_{5}'
