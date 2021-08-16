@@ -208,8 +208,24 @@ def let_go_pet(user_id):
     connect = get_connect()
     try:
         with connect.cursor() as cursor:
+            cursor.execute(f'SELECT * FROM pets '
+                           f'INNER JOIN pets_stats ON pets.type=pets_stats.id '
+                           f'WHERE owner_id={user_id} ')
+            pet_info = cursor.fetchone()
+            buff = pet_info['lvl'] // pet_info['lvl_buff'] + pet_info['add_how_many']
+
+            if pet_info['pet_func'] == 'default':
+                add_to = pet_info['add_to']
+
+                cursor.execute(f'SELECT {add_to} FROM users '
+                               f'WHERE user_id={user_id} ')
+                hero_stat = cursor.fetchone()[add_to]
+                new_hero_stat = hero_stat - buff
+
+                cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                               f"WHERE user_id={user_id}")
             cursor.execute(f"DELETE FROM pets WHERE owner_id={user_id} ")
             connect.commit()
     finally:
-        connect.close() 
+        connect.close()
 
