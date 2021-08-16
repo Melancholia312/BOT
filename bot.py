@@ -2289,7 +2289,7 @@ def index(msg, user_id, peer_id):
                         answer = 'Вы не на работе'
                         send_message(peer_id=peer_id, text=answer)
                 
-                                elif clear_msg(msg, 'питомец'):
+                elif clear_msg(msg, 'питомец'):
                     pet_info = get_user_pet(user_id)
                     if pet_info:
                         pet_info = show_pet_info(pet_info, user_id)
