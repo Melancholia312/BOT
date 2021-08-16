@@ -2338,7 +2338,7 @@ def index(msg, user_id, peer_id):
                         send_message(peer_id=peer_id, text=answer)
 
                 elif '/дать кличку' in msg.lower():
-                    pet_name = msg.lower().split('/дать кличку')[1].strip()
+                    pet_name = msg.lower().split('/дать кличку')[1].strip().title()
                     if get_user_pet(user_id):
                         if len(pet_name) > 50:
                             send_message(user_id, "Кличка должна быть не больше 50 символов")
