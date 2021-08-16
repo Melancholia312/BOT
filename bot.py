@@ -26,6 +26,7 @@ from db.fishing import *
 from db.work import *
 from db.revaral_system import *
 from db.treasures import *
+from db.pets import *
 from db.admin import *
 from gameplay.monsters import *
 from gameplay.classes import *
@@ -1111,6 +1112,35 @@ def show_user_treasures(treasures):
         text_for_buttons.append('/открыть бутылка с письмом')
 
     return {'answer': show_case, 'text_for_buttons': text_for_buttons}
+
+def show_pet_info(pet_info, user_id):
+    stat_name = {'max_energy': 'к максимальной энергии', 'luck': 'к удаче',
+                 'CRIT_RATE': 'к шансу крита', 'money_multiply': '% к получаемому золоту',
+                 'dig': 'Способность выкапывать ресурсы'}
+    space = '~~~~~~~~~~~~~' + " \n"
+    text_for_buttons = []
+    menu = 'Меню питомца' + '\n'
+    show_case = 'Кличка питомца:' + ' ' + pet_info['name'] + '\n' + \
+                'Вид питомца:' + ' ' + pet_info['pet_name'] + '\n' + \
+                'Уровень:' + ' ' + str(pet_info['lvl']) + '\n' + \
+                'Опыт:' + ' ' + f'{pet_info["exp"]}/{pet_info["max_exp"]}' + '\n'
+
+    if pet_info['pet_func'] != 'default':
+        show_case += 'Бонус питомца:' + ' ' + f'{stat_name[pet_info["add_to"]]}' + '\n'
+    else:
+        buff = pet_info['lvl'] // pet_info['lvl_buff'] + pet_info['add_how_many']
+        show_case += 'Бонус питомца:' + ' ' + f'+{buff} {stat_name[pet_info["add_to"]]}' + '\n'
+
+    if get_time_to_feed(user_id):
+        text_for_buttons.append('/покормить конфета')
+        text_for_buttons.append('/покормить морковка')
+        text_for_buttons.append('/покормить хлеб')
+
+    food_info = '🍬Конфета | Стоимость 30 Крон | +2 опыта' + '\n' + \
+                '🥕Морковка | Стоимость 80 Крон | +4 опыта' + '\n' + \
+                '🍞Хлеб | Стоимость 160 Крон | +7 опыта' + '\n'
+
+    return {'answer': menu + space + show_case + space + food_info, 'text_for_buttons': text_for_buttons}
 
 def index(msg, user_id, peer_id):
     
@@ -2258,7 +2288,70 @@ def index(msg, user_id, peer_id):
                     else:
                         answer = 'Вы не на работе'
                         send_message(peer_id=peer_id, text=answer)
+                
+                                elif clear_msg(msg, 'питомец'):
+                    pet_info = get_user_pet(user_id)
+                    if pet_info:
+                        pet_info = show_pet_info(pet_info, user_id)
+                        answer = pet_info['answer']
+                        text_for_buttons = pet_info['text_for_buttons']
+                        if text_for_buttons:
+                            send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        else:
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'У вас нет питомца!'
+                        send_message(peer_id=peer_id, text=answer)
 
+                elif '/покормить' in msg.lower():
+
+                    food = {'конфета': 2, 'морковка': 4, 'хлеб': 7}
+                    food_cost = {'конфета': 30, 'морковка': 80, 'хлеб': 160}
+                    food_name = msg.lower().split('/покормить')[1].strip()
+
+                    try:
+                        food_exp = food[food_name]
+                    except:
+                        food_exp = None
+
+                    if food_exp:
+                        if get_user_pet(user_id):
+                            user_money = get_hero_info(user_id)['money']
+                            if user_money >= food_cost[food_name]:
+                                result = get_time_to_feed(user_id)
+                                if result[0]:
+                                    add_money(user_id, -food_cost[food_name])
+                                    answer = feed_pet(user_id, food_exp)
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = result[1]
+                                    send_message(peer_id=peer_id, text=answer)
+
+                            else:
+                                answer = 'У вас недостаточно средств'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'У вас нет питомца!'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'такой еды не существует!'
+                        send_message(peer_id=peer_id, text=answer)
+
+                elif '/дать кличку' in msg.lower():
+                    pet_name = msg.lower().split('/дать кличку')[1].strip()
+                    if get_user_pet(user_id):
+                        if len(pet_name) > 50:
+                            send_message(user_id, "Кличка должна быть не больше 50 символов")
+                        elif len(pet_name) < 3:
+                            send_message(user_id, "Кличка должна быть не меньше 3 символов")
+                        else:
+                            change_pet_name(user_id, pet_name)
+                            answer = 'Хорошая кличка, слушай!'
+                            send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'У вас нет питомца!'
+                        send_message(peer_id=peer_id, text=answer)
+                
                 elif clear_msg(msg, 'регистрация'):
                     answer = 'Вы уже зарегистрированы!'
                     send_message(peer_id=peer_id, text=answer)
