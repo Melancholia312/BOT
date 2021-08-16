@@ -1122,7 +1122,7 @@ def show_user_treasures(treasures):
 
 def show_pet_info(pet_info, user_id):
     stat_name = {'max_energy': 'к максимальной энергии', 'luck': 'к удаче',
-                 'CRIT_RATE': 'к шансу крита', 'money_multiply': '% к получаемому золоту',
+                 'CRIT_RATE': '% к шансу крита', 'money_multiply': '% к получаемому золоту',
                  'dig': 'Способность выкапывать ресурсы'}
     space = '~~~~~~~~~~~~~' + " \n"
     text_for_buttons = []
