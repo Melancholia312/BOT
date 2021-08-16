@@ -366,9 +366,12 @@ def user_register(msg, user_id):
                         text=['/меню', '/помощь'], inline=False))
 
                     send_message(inviter_id, f'Ваш реферальный код был введен игроком @id{user_id}')
-                    if count_referals(inviter_id) == 3:
+                    if count_referals(inviter_id) == 2:
                         give_treasure(inviter_id, 1)
-                        send_message(inviter_id, f'За приглашение 3 рефералов вы получили Дорожный сундук!')
+                        send_message(inviter_id, f'За приглашение 2 рефералов вы получили Дорожный сундук!')
+                    elif count_referals(inviter_id) == 4:
+                        give_treasure(inviter_id, 6)
+                        send_message(inviter_id, f'За приглашение 4 рефералов вы получили Мяукающий мешок!')
                     elif count_referals(inviter_id) == 6:
                         give_treasure(inviter_id, 5)
                         send_message(inviter_id, f'За приглашение 6 рефералов вы получили Бутылку с письмом!')
@@ -1094,7 +1097,8 @@ def show_user_treasures(treasures):
     show_case += 'Зачарованый сундук: ' + str(treasures['treasure_2']) + '\n'
     show_case += 'Аукционный сундук: ' + str(treasures['treasure_3']) + '\n'
     show_case += 'Потеряная шкатулка: ' + str(treasures['treasure_4']) + '\n'
-    show_case += 'Бутылка с письмом: ' + str(treasures['treasure_5']) + '\n' + space
+    show_case += 'Бутылка с письмом: ' + str(treasures['treasure_5']) + '\n' 
+    show_case += 'Мяукающий мешок: ' + str(treasures['treasure_6']) + '\n' + space
 
     if treasures['treasure_1'] != 0:
         text_for_buttons.append('/открыть дорожный сундук')
@@ -1110,6 +1114,9 @@ def show_user_treasures(treasures):
 
     if treasures['treasure_5'] != 0:
         text_for_buttons.append('/открыть бутылка с письмом')
+       
+    if treasures['treasure_6'] != 0:
+        text_for_buttons.append('/открыть мяукающий мешок')
 
     return {'answer': show_case, 'text_for_buttons': text_for_buttons}
 
@@ -1193,11 +1200,16 @@ def index(msg, user_id, peer_id):
                     space = "\n" + '~~~~~~~~~~~~~' + "\n"
                     referal_quantity = count_referals(user_id)
                     answer = 'Награды' + space
-                    if referal_quantity >= 3:
+                    if referal_quantity >= 2:
                         answer += '❌ '
                     else:
                         answer += '⭕ '
-                    answer += 'За 3 реферала вы получите Дорожный сундук' + '\n'
+                    answer += 'За 2 реферала вы получите Дорожный сундук' + '\n'
+                    if referal_quantity >= 4:
+                        answer += '❌ '
+                    else:
+                        answer += '⭕ '
+                    answer += 'За 4 реферала вы получите Мяукающий мешок' + '\n'
                     if referal_quantity >= 6:
                         answer += '❌ '
                     else:
@@ -1407,7 +1419,8 @@ def index(msg, user_id, peer_id):
                                          'зачарованый сундук': 2,
                                          'аукционный сундук': 3,
                                          'потеряная шкатулка': 4,
-                                         'бутылка с письмом': 5}
+                                         'бутылка с письмом': 5,
+                                         'мяукающий мешок': 6}
                     try:
                         treausre_name = msg.lower().split('/открыть')[1].strip()
                     except:
