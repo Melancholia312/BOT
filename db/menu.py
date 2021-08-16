@@ -180,16 +180,16 @@ def add_money(user_id, money, with_mul=False):
                 cursor.execute(f"SELECT money, money_multiply FROM users "
                                f"WHERE user_id={user_id}")
                 user_money_info = cursor.fetchone()
-                money_multiply = user_money_info['money_multiply']
+                money_multiply = user_money_info['money_multiply']/100
                 user_money = user_money_info['money']
                 if money > 0:
-                    user_money = user_money+money*money_multiply
+                    user_money = int(user_money+money*money_multiply)
                 else:
                     user_money = user_money+money
                 cursor.execute(f"UPDATE users SET money={user_money} "
                                f"WHERE user_id={user_id}")
                 connect.commit()
-                return money*money_multiply
+                return int(money*money_multiply)
             else:
                 cursor.execute(f"SELECT money FROM users "
                                f"WHERE user_id={user_id}")
