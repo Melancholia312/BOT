@@ -219,8 +219,8 @@ def open_treasure(user_id, treasure_number):
                         cursor.execute(f'UPDATE users SET {treasure}={user_treasure} '
                                        f'WHERE user_id={user_id}')
 
-                        connect.commit()
-                        return 'Вы открыли Мяукающий мешок и получили: ' + '\n' + f'+{random_pet_name}'
+                    connect.commit()
+                    return 'Вы открыли Мяукающий мешок и получили: ' + '\n' + f'+{random_pet_name}'
 
                 else:
                     earn_exp = random.randint(12, 17)
