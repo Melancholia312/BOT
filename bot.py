@@ -1252,7 +1252,7 @@ def index(msg, user_id, peer_id):
                 elif clear_msg(msg, 'мой персонаж'):
                     hero_info = get_hero_info(user_id)
                     answer = show_hero_info(hero_info)
-                    text_for_buttons = ['/статы', '/мой инвентарь', '/мое снаряжение', '/дуэль инфо', '/состояние персонажа']
+                    text_for_buttons = ['/статы', '/мой инвентарь', '/мое снаряжение', '/дуэль инфо', '/состояние персонажа', '/питомец']
                     send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons), attachment=hero_info['image'])
 
                 elif clear_msg(msg, 'баланс'):
