@@ -195,10 +195,7 @@ def add_money(user_id, money, with_mul=False):
                                f"WHERE user_id={user_id}")
                 user_money_info = cursor.fetchone()
                 user_money = user_money_info['money']
-                if money > 0:
-                    user_money = user_money + money
-                else:
-                    user_money = user_money + money
+                user_money = user_money + money
                 cursor.execute(f"UPDATE users SET money={user_money} "
                                f"WHERE user_id={user_id}")
                 connect.commit()
