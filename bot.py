@@ -2354,6 +2354,7 @@ def index(msg, user_id, peer_id):
                 
                 elif clear_msg(msg, 'отпустить питомца'):
                     if get_user_pet(user_id):
+                        let_go_pet(user_id)
                         answer = 'Вы отпустили вашего питомца. Попрощайтесь напоследок что-ли...'
                         send_message(peer_id=peer_id, text=answer)
                     else:
