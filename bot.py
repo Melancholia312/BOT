@@ -2441,7 +2441,7 @@ def index(msg, user_id, peer_id):
 
                         if recipient:
                             if is_exists(recipient):
-                                if treasure_num in [1, 2, 3, 4, 5]:
+                                if treasure_num in [1, 2, 3, 4, 5, 6]:
                                     give_treasure(recipient, treasure_num)
                                     answer = f'Вы успешно дали игроку @id{recipient} сундук!'
                                     send_message(peer_id=peer_id, text=answer)
