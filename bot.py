@@ -2352,10 +2352,18 @@ def index(msg, user_id, peer_id):
                         answer = 'У вас нет питомца!'
                         send_message(peer_id=peer_id, text=answer)
                 
+                elif clear_msg(msg, 'отпустить питомца'):
+                    if get_user_pet(user_id):
+                        answer = 'Вы отпустили вашего питомца. Попрощайтесь напоследок что-ли...'
+                        send_message(peer_id=peer_id, text=answer)
+                    else:
+                        answer = 'У вас нет питомца!'
+                        send_message(peer_id=peer_id, text=answer)
+                
                 elif clear_msg(msg, 'регистрация'):
                     answer = 'Вы уже зарегистрированы!'
                     send_message(peer_id=peer_id, text=answer)
-
+                
                 elif is_admin(user_id):
 
                     if '/пополнить баланс' in msg.lower():
