@@ -2404,7 +2404,32 @@ def index(msg, user_id, peer_id):
                         else:
                             answer = 'Такого игрока не существует'
                             send_message(peer_id=peer_id, text=answer)
+                    
+                    elif '/конфисковать кроны' in msg.lower():
 
+                        try:
+                            recipient = int(msg.lower().split('/конфисковать кроны')[1].split('|')[0].strip()[3:])
+                            value = int(msg.lower().split('/конфисковать кроны')[1].split('-')[-1].strip())
+                        except:
+                            recipient = None
+                            value = None
+
+                        if recipient:
+                            if is_exists(recipient):
+                                if value:
+                                    add_money(recipient, -value)
+                                    answer = f'Вы успешно конфисковали {value} крон игрока @id{recipient}'
+                                    send_message(peer_id=peer_id, text=answer)
+                                else:
+                                    answer = 'Укажите валидное число крон!'
+                                    send_message(peer_id=peer_id, text=answer)
+                            else:
+                                answer = 'Такого игрока не существует'
+                                send_message(peer_id=peer_id, text=answer)
+                        else:
+                            answer = 'Такого игрока не существует'
+                            send_message(peer_id=peer_id, text=answer)
+                    
                     elif '/добавить энергии' in msg.lower():
 
                         try:
