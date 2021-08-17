@@ -2165,9 +2165,9 @@ def index(msg, user_id, peer_id):
                     reset_fish_time(user_id)
                     answer, text_for_buttons = show_fishing(user_id)
                     if text_for_buttons:
-                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons))
+                        send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text_for_buttons), attachment='photo-203434371_457239512')
                     else:
-                        send_message(peer_id=peer_id, text=answer)
+                        send_message(peer_id=peer_id, text=answer,  attachment='photo-203434371_457239512')
 
                 elif clear_msg(msg, 'приобрести удочку'):
                     if get_hero_info(user_id)['money'] >= 260:
