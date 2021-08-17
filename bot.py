@@ -1094,9 +1094,9 @@ def show_user_treasures(treasures):
     text_for_buttons = []
     show_case = 'Ваши сокровищницы' + '\n' + space
     show_case += 'Дорожный сундук: ' + str(treasures['treasure_1']) + '\n'
-    show_case += 'Зачарованый сундук: ' + str(treasures['treasure_2']) + '\n'
+    show_case += 'Зачарованный сундук: ' + str(treasures['treasure_2']) + '\n'
     show_case += 'Аукционный сундук: ' + str(treasures['treasure_3']) + '\n'
-    show_case += 'Потеряная шкатулка: ' + str(treasures['treasure_4']) + '\n'
+    show_case += 'Потерянная шкатулка: ' + str(treasures['treasure_4']) + '\n'
     show_case += 'Бутылка с письмом: ' + str(treasures['treasure_5']) + '\n' 
     show_case += 'Мяукающий мешок: ' + str(treasures['treasure_6']) + '\n' + space
 
@@ -1110,7 +1110,7 @@ def show_user_treasures(treasures):
         text_for_buttons.append('/открыть аукционный сундук')
 
     if treasures['treasure_4'] != 0:
-        text_for_buttons.append('/открыть потеряная шкатулка')
+        text_for_buttons.append('/открыть потерянная шкатулка')
 
     if treasures['treasure_5'] != 0:
         text_for_buttons.append('/открыть бутылка с письмом')
@@ -1219,7 +1219,7 @@ def index(msg, user_id, peer_id):
                         answer += '❌ '
                     else:
                         answer += '⭕ '
-                    answer += 'За 9 рефералов вы получите 3 Зачарованых сундука' + '\n'
+                    answer += 'За 9 рефералов вы получите 3 Зачарованных сундука' + '\n'
                     if referal_quantity >= 14:
                         answer += '❌ '
                     else:
@@ -1418,16 +1418,16 @@ def index(msg, user_id, peer_id):
                     treasures_numbers = {'дорожный сундук': 1,
                                          'зачарованный сундук': 2,
                                          'аукционный сундук': 3,
-                                         'потеряная шкатулка': 4,
+                                         'потерянная шкатулка': 4,
                                          'бутылка с письмом': 5,
                                          'мяукающий мешок': 6}
                     try:
-                        treausre_name = msg.lower().split('/открыть')[1].strip()
+                        treausre_name = treasures_numbers[msg.lower().split('/открыть')[1].strip()]
                     except:
                         treausre_name = None
 
                     if treausre_name:
-                        if check_treasure_quantity(user_id, treasures_numbers[treausre_name]):
+                        if check_treasure_quantity(user_id, treausre_name):
                             if check_full_inventory(user_id):
                                 answer = open_treasure(user_id, treasures_numbers[treausre_name])
                                 send_message(peer_id=peer_id, text=answer)
