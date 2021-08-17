@@ -1104,7 +1104,7 @@ def show_user_treasures(treasures):
         text_for_buttons.append('/открыть дорожный сундук')
 
     if treasures['treasure_2'] != 0:
-        text_for_buttons.append('/открыть зачарованый сундук')
+        text_for_buttons.append('/открыть зачарованный сундук')
 
     if treasures['treasure_3'] != 0:
         text_for_buttons.append('/открыть аукционный сундук')
@@ -1416,7 +1416,7 @@ def index(msg, user_id, peer_id):
 
                 elif '/открыть' in msg.lower():
                     treasures_numbers = {'дорожный сундук': 1,
-                                         'зачарованый сундук': 2,
+                                         'зачарованный сундук': 2,
                                          'аукционный сундук': 3,
                                          'потеряная шкатулка': 4,
                                          'бутылка с письмом': 5,
