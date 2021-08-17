@@ -346,7 +346,7 @@ def user_register(msg, user_id):
             set_own_referal_code(user_id, own_referal_code)
             set_flag(user_id, 5)
             send_message(user_id, "Вы успешно зарегистрировались!", keyboard=create_keyboard(
-                text=['/меню', '/помощь'], inline=False))
+                text=['/меню', '/мой персонаж', '/состояние персонажа', '/помощь'], inline=False))
 
         elif code:
 
@@ -363,7 +363,7 @@ def user_register(msg, user_id):
                     give_treasure(user_id, 1)
                     set_flag(user_id, 5)
                     send_message(user_id, "Вы успешно зарегистрировались!", keyboard=create_keyboard(
-                        text=['/меню', '/помощь'], inline=False))
+                        text=['/меню', '/мой персонаж', '/состояние персонажа', '/помощь'], inline=False))
 
                     send_message(inviter_id, f'Ваш реферальный код был введен игроком @id{user_id}')
                     if count_referals(inviter_id) == 2:
@@ -984,7 +984,7 @@ def fishing(user_id, peer_id):
                 item_name = give_item(user_id, 1)
                 send_message(peer_id=peer_id, text=f'Вы выловили {item_name}')
             else:
-                answer = 'Валовленный вами предмет не поместился в рюкзаке и вы отдали его рыбаку, сидевшего рядом, за 50 крон'
+                answer = 'Выловленный вами предмет не поместился в рюкзаке и вы отдали его рыбаку, сидевшего рядом, за 50 крон'
                 add_money(user_id, 50, with_mul=True)
                 send_message(peer_id=peer_id, text=answer)
 
@@ -993,7 +993,7 @@ def fishing(user_id, peer_id):
                 item_name = give_item(user_id, 2)
                 send_message(peer_id=peer_id, text=f'Вы выловили {item_name}')
             else:
-                answer = 'Валовленный вами предмет не поместился в рюкзаке и вы отдали его рыбаку, сидевшего рядом, за 100 крон'
+                answer = 'Выловленный вами предмет не поместился в рюкзаке и вы отдали его рыбаку, сидевшего рядом, за 100 крон'
                 add_money(user_id, 100, with_mul=True)
                 send_message(peer_id=peer_id, text=answer)
 
@@ -1290,7 +1290,7 @@ def index(msg, user_id, peer_id):
                         days = delta.days
                         if seconds > 10800 or days < 0:
                             wake_up(user_id)
-                            answer = 'Выш персонаж отдохнул и полон сил'
+                            answer = 'Ваш персонаж отдохнул и полон сил'
                             send_message(peer_id=peer_id, text=answer)
                         else:
                             remaining_time = strftime("%H:%M", gmtime(seconds))
