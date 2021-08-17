@@ -1422,14 +1422,14 @@ def index(msg, user_id, peer_id):
                                          'бутылка с письмом': 5,
                                          'мяукающий мешок': 6}
                     try:
-                        treausre_name = treasures_numbers[msg.lower().split('/открыть')[1].strip()]
+                        treasure_name = treasures_numbers[msg.lower().split('/открыть')[1].strip()]
                     except:
-                        treausre_name = None
+                        treasure_name = None
 
-                    if treausre_name:
-                        if check_treasure_quantity(user_id, treausre_name):
+                    if treasure_name:
+                        if check_treasure_quantity(user_id, treasure_name):
                             if check_full_inventory(user_id):
-                                answer = open_treasure(user_id, treasures_numbers[treausre_name])
+                                answer = open_treasure(user_id, treasure_name)
                                 send_message(peer_id=peer_id, text=answer)
                             else:
                                 answer = 'У вас нет места в инвентаре'
