@@ -1165,7 +1165,7 @@ def index(msg, user_id, peer_id):
                     answer = "Полезные ссылки" + space + '📚Краткое руководство:' + '\n' +  'https://vk.com/topic-203434371_48149392' + '\n' + '🎯Советы для новых игроков:' + '\n' + 'https://vk.com/topic-203434371_48174280' + '\n' + \
                              '☎Исправление багов:' + '\n' +  'https://vk.com/topic-203434371_47471775' + \
                              '\n' + '\n' + 'По важным вопросам писать:' + '\n' + '🍰 [id276221064|@melancholia312]' + space
-                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text=['/меню', '/помощь'], inline=False))
+                    send_message(peer_id=peer_id, text=answer, keyboard=create_keyboard(text=['/меню', '/мой персонаж', '/состояние персонажа', '/помощь'], inline=False))
 
         elif is_exists(user_id):
 
