@@ -453,18 +453,16 @@ def open_treasure(user_id, treasure_number):
                     cursor.execute(f"SELECT id, name FROM items "
                                    f"WHERE tier={4}")
                     items = cursor.fetchall()
-                    user_item_1 = random.choice(items)
-                    user_item_2 = random.choice(items)
+                    user_item = random.choice(items)
 
                     cursor.execute(f"INSERT INTO relation_items_users(user_id, item_id) "
-                                   f"VALUES ({user_id}, {user_item_1['id']}) ")
-                    cursor.execute(f"INSERT INTO relation_items_users(user_id, item_id) "
-                                   f"VALUES ({user_id}, {user_item_2['id']}) ")
+                                   f"VALUES ({user_id}, {user_item['id']}) ")
+  
                     cursor.execute(f'UPDATE users SET {treasure}={user_treasure} '
                                    f'WHERE user_id={user_id}')
                     connect.commit()
 
-                    return 'Вы открыли Ящик Пандоры и получили: ' + '\n' + f'+{user_item_2["name"]}' + '\n' + f'+{user_item_1["name"]}' + "\n" + \
+                    return 'Вы открыли Ящик Пандоры и получили: ' + '\n' + f'+{user_item["name"]}' + "\n" + \
                            'Ваш рюкзак показался вам легче...'
 
                 elif result == 6:
