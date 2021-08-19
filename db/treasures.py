@@ -458,6 +458,7 @@ def open_treasure(user_id, treasure_number):
                     cursor.execute(f'UPDATE users SET luck={user_luck + 10}, money={0}, is_dead={1}, '
                                    f'{treasure}={user_treasure} '
                                    f'WHERE user_id={user_id}')
+                    connect.commit()
                     return 'Вы открыли Ящик Пандоры и из него нахлынул якрий свет. Вы потеряли сознание. ' \
                            'Очнувшись, вы поняли, что пока вы спали, вас избили и обокрыли...' + '\n' + '+10 удачи'
             
