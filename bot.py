@@ -1138,7 +1138,8 @@ def show_pet_info(pet_info, user_id):
         buff = pet_info['lvl'] // pet_info['lvl_buff'] + pet_info['add_how_many']
         show_case += 'Бонус питомца:' + ' ' + f'+{buff} {stat_name[pet_info["add_to"]]}' + '\n'
 
-    if get_time_to_feed(user_id):
+    result = get_time_to_feed(user_id)
+    if result[0]:
         text_for_buttons.append('/покормить конфета')
         text_for_buttons.append('/покормить морковка')
         text_for_buttons.append('/покормить хлеб')
