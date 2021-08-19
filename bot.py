@@ -1098,7 +1098,8 @@ def show_user_treasures(treasures):
     show_case += 'Аукционный сундук: ' + str(treasures['treasure_3']) + '\n'
     show_case += 'Потерянная шкатулка: ' + str(treasures['treasure_4']) + '\n'
     show_case += 'Бутылка с письмом: ' + str(treasures['treasure_5']) + '\n' 
-    show_case += 'Мяукающий мешок: ' + str(treasures['treasure_6']) + '\n' + space
+    show_case += 'Мяукающий мешок: ' + str(treasures['treasure_6']) + '\n'
+    show_case += 'Ящик Пандоры: ' + str(treasures['treasure_7']) + '\n' + space
 
     if treasures['treasure_1'] != 0:
         text_for_buttons.append('/открыть дорожный сундук')
@@ -1117,6 +1118,9 @@ def show_user_treasures(treasures):
        
     if treasures['treasure_6'] != 0:
         text_for_buttons.append('/открыть мяукающий мешок')
+        
+    if treasures['treasure_7'] != 0:
+        text_for_buttons.append('/открыть ящик пандоры')
 
     return {'answer': show_case, 'text_for_buttons': text_for_buttons}
 
@@ -1421,7 +1425,8 @@ def index(msg, user_id, peer_id):
                                          'аукционный сундук': 3,
                                          'потерянная шкатулка': 4,
                                          'бутылка с письмом': 5,
-                                         'мяукающий мешок': 6}
+                                         'мяукающий мешок': 6,
+                                         'ящик пандоры': 7}
                     try:
                         treasure_name = treasures_numbers[msg.lower().split('/открыть')[1].strip()]
                     except:
