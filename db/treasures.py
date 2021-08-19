@@ -63,7 +63,7 @@ def open_treasure(user_id, treasure_number):
     try:
         with connect.cursor() as cursor:
             treasure = f'treasure_{treasure_number}'
-            cursor.execute(f'SELECT * {treasure} FROM users WHERE user_id={user_id}')
+            cursor.execute(f'SELECT * FROM users WHERE user_id={user_id}')
             user_info = cursor.fetchone()
             user_exp = user_info['exp']
             user_money = user_info['money']
