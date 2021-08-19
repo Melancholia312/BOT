@@ -45,6 +45,18 @@ def check_treasure_quantity(user_id, treasure_number):
     finally:
         connect.close()
 
+        
+def unequip_item(hero_stats, item_stats):
+
+    new_ATK = hero_stats['ATK'] - item_stats['ATK']
+    new_HP = hero_stats['HP'] - item_stats['HP']
+    new_MP = hero_stats['MP'] - item_stats['MP']
+    new_strength = hero_stats['strength'] - item_stats['strength']
+    new_agility = hero_stats['agility'] - item_stats['agility']
+    new_intellect = hero_stats['intellect'] - item_stats['intellect']
+    new_luck = hero_stats['luck'] - item_stats['luck']
+    return {'new_ATK': new_ATK, 'new_HP': new_HP, 'new_MP': new_MP, 'new_strength': new_strength,
+            'new_agility': new_agility, 'new_intellect': new_intellect, 'new_luck': new_luck}
 
 def open_treasure(user_id, treasure_number):
     connect = get_connect()
