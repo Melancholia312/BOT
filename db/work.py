@@ -289,7 +289,8 @@ def blacksmith(user_id):
             user_money = hero_info['money']
 
             if chance < 68 + hero_info['luck']:
-                crafted_weapon = {'меч': 1, 'алебарда': 0, 'кираса': 0, 'топор': 1, 'лопата': 0, 'нож': 1}
+                crafted_weapon = ['меч', 'алебарда', 'кираса', 'топор', 'лопата', 'нож']
+                weapon_sex = {'меч': 1, 'алебарда': 0, 'кираса': 0, 'топор': 1, 'лопата': 0, 'нож': 1}
                 random_weapon = random.choice(crafted_weapon)
                 earn_money = hero_info['intellect'] * 2 + hero_info['strength'] * 3 + chance // 10 * 2
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 2} "
