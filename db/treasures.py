@@ -63,7 +63,7 @@ def open_treasure(user_id, treasure_number):
     try:
         with connect.cursor() as cursor:
             treasure = f'treasure_{treasure_number}'
-            cursor.execute(f'SELECT exp, money, {treasure} FROM users WHERE user_id={user_id}')
+            cursor.execute(f'SELECT * {treasure} FROM users WHERE user_id={user_id}')
             user_info = cursor.fetchone()
             user_exp = user_info['exp']
             user_money = user_info['money']
@@ -248,7 +248,6 @@ def open_treasure(user_id, treasure_number):
             elif treasure_number == 7:
 
                 result = random.randint(1,6)
-                print(result)
                 cursor.execute(f'SELECT * FROM pets '
                                f'INNER JOIN pets_stats ON pets.type=pets_stats.id '
                                f'WHERE owner_id={user_id} ')
@@ -265,9 +264,7 @@ def open_treasure(user_id, treasure_number):
                     return 'Вы открыли Ящик Пандоры и получили: ' + '\n' + f'+{earn_money} крон' + '\n' + f'+{earn_exp} опыта'
 
                 elif result == 2:
-                    print(user_info)
                     user_max_energy = user_info['max_energy']
-                    print(user_max_energy)
                     cursor.execute(f'UPDATE users SET energy={0}, '
                                    f'max_energy={user_max_energy - 2}, '
                                    f'{treasure}={user_treasure} '
@@ -466,9 +463,7 @@ def open_treasure(user_id, treasure_number):
                            'Ваш рюкзак показался вам легче...'
 
                 elif result == 6:
-                    print(user_info)
                     user_luck = user_info['luck']
-                    print(user_luck)
                     cursor.execute(f'UPDATE users SET luck={user_luck + 10}, money={0}, is_dead={1}, {treasure}={user_treasure} '
                                    f'WHERE user_id={user_id} ')
                     connect.commit()
