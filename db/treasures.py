@@ -265,7 +265,9 @@ def open_treasure(user_id, treasure_number):
                     return 'Вы открыли Ящик Пандоры и получили: ' + '\n' + f'+{earn_money} крон' + '\n' + f'+{earn_exp} опыта'
 
                 elif result == 2:
+                    print(user_info)
                     user_max_energy = user_info['max_energy']
+                    print(user_max_energy)
                     cursor.execute(f'UPDATE users SET energy={0}, '
                                    f'max_energy={user_max_energy - 2}, '
                                    f'{treasure}={user_treasure} '
