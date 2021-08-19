@@ -236,6 +236,7 @@ def open_treasure(user_id, treasure_number):
             elif treasure_number == 7:
 
                 result = random.randint(1,6)
+                print(result)
                 cursor.execute(f'SELECT * FROM pets '
                                f'INNER JOIN pets_stats ON pets.type=pets_stats.id '
                                f'WHERE owner_id={user_id} ')
