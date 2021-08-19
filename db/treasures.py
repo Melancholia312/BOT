@@ -268,6 +268,23 @@ def open_treasure(user_id, treasure_number):
                         cursor.execute(f'UPDATE users SET money={user_money+earn_money}, '
                                        f'{treasure}={user_treasure} '
                                        f'WHERE user_id={user_id}')
+                        cursor.execute(f'SELECT * FROM pets '
+                           f'INNER JOIN pets_stats ON pets.type=pets_stats.id '
+                           f'WHERE owner_id={user_id} ')
+                        pet_info = cursor.fetchone()
+                        buff = pet_info['lvl'] // pet_info['lvl_buff'] + pet_info['add_how_many']
+
+                        if pet_info['pet_func'] == 'default':
+                            add_to = pet_info['add_to']
+
+                            cursor.execute(f'SELECT {add_to} FROM users '
+                                           f'WHERE user_id={user_id} ')
+                            hero_stat = cursor.fetchone()[add_to]
+                            new_hero_stat = hero_stat - buff
+
+                            cursor.execute(f"UPDATE users SET {add_to}={new_hero_stat} "
+                                           f"WHERE user_id={user_id}")
+                        cursor.execute(f"DELETE FROM pets WHERE owner_id={user_id} ")
                         connect.commit()
                         return 'Когда вы открывали ящик, ваш питомец испугался яркого света и сбежал...' + '\n' + f'+ {earn_money} Крон'
 
