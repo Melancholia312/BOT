@@ -125,12 +125,12 @@ def old_carriage(user_id):
                         connect.commit()
                         return answer
                     else:
-                        money = round(money * 0.85)
+                        money = int(money * 0.85)
                         hero_exp += 3
                         cursor.execute(f"UPDATE users SET money={money}, exp={hero_exp} "
                                        f"WHERE user_id={user_id} ")
                         answer += 'К вам на помощь подоспел отряд вольных стрелков. Все звери убиты, но теперь придётся отблагодарить ваших спасителей звонков монетой.' + '\n' + \
-                                  '-15% Крон' + ' ' + '+ 3 опыта' + '\n\n' + '~~~\n'
+                                  f'-{int(money*0.15)} Крон' + ' ' + '+ 3 опыта' + '\n\n' + '~~~\n'
                         connect.commit()
                         return answer
 
@@ -198,8 +198,8 @@ def find_joke(user_id):
             random_event = random.choice(random_events)
             if random_event == 1:
                 answer += 'Убегая, вы обронили несколько монет.' + '\n' + \
-                          '-5% Крон.' + '\n\n' + '~~~\n'
-                money = money * 0.95
+                          f'-{int(money*0.05)} Крон.' + '\n\n' + '~~~\n'
+                money = int(money * 0.95)
                 cursor.execute(f"UPDATE users SET money={money}, exp={exp} "
                                f"WHERE user_id={user_id}")
                 connect.commit()
@@ -262,7 +262,7 @@ def find_homeless(user_id):
             answer = 'На улице города, вы встретили нищего. Он просил милостню..' + '\n\n' + '~~~\n'
             if random_event == 1:
                 answer += f'Конечно, {hero_name} добрая душа. Вы не смогли пройти мимо и бросили пару монет в чашку нищего.' + '\n' + \
-                          '-5% монет' + ' ' + '+1 удача' + '\n\n' + '~~~\n' 
+                          'f'-{int(hero_money*0.05)} Крон.'' + ' ' + '+1 удача' + '\n\n' + '~~~\n' 
                 hero_money = int(hero_money * 0.95)
                 cursor.execute(f"UPDATE users SET luck={hero_luck + 1}, money={hero_money} "
                                f"WHERE user_id={user_id}")
