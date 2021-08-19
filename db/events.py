@@ -262,7 +262,7 @@ def find_homeless(user_id):
             answer = 'На улице города, вы встретили нищего. Он просил милостню..' + '\n\n' + '~~~\n'
             if random_event == 1:
                 answer += f'Конечно, {hero_name} добрая душа. Вы не смогли пройти мимо и бросили пару монет в чашку нищего.' + '\n' + \
-                          'f'-{int(hero_money*0.05)} Крон.'' + ' ' + '+1 удача' + '\n\n' + '~~~\n' 
+                          f'-{int(hero_money*0.05)} Крон.'' + ' ' + '+1 удача' + '\n\n' + '~~~\n' 
                 hero_money = int(hero_money * 0.95)
                 cursor.execute(f"UPDATE users SET luck={hero_luck + 1}, money={hero_money} "
                                f"WHERE user_id={user_id}")
