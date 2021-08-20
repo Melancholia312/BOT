@@ -434,7 +434,7 @@ def dange_stage_event(user_id, stage):
 
     elif chance < 26 - player_stats['luck'] and stage % 3 == 0:
         log += player_name + ': ' + 'Что сейчас произошло?' + "\n"
-        drop_money = chance * stage // 2 * (-1)
+        drop_money = player_stats['lvl'] * 7 + chance * stage // 2 * (-1)
         drop_money = add_money(user_id, drop_money)
         log += 'Вы видете как гоблин убегает вместе с вашим кошельком.' + '\n' + \
                str(drop_money) + ' Крон' + '\n'
