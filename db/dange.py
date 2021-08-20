@@ -94,7 +94,7 @@ def give_dange_item(user_id, dange_floor):
                 if chance < 70 - user_luck*3:
                     treausre_tier = 4
                 else:
-                    treausre_tier = 3
+                    treausre_tier = 5
 
             elif dange_floor == 20:
                 if chance < 90-user_luck*2:
