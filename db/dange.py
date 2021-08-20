@@ -110,7 +110,7 @@ def give_dange_item(user_id, dange_floor):
 
             treasure = f'treasure_{treausre_tier}'
             cursor.execute(f'SELECT {treasure} FROM users WHERE user_id={user_id}')
-            treasure_quantity = cursor.fetchone()[treasure] + treasure_quantity
+            treasure_quantity = cursor.fetchone()[treasure]
             cursor.execute(f'UPDATE users SET {treasure}={treasure_quantity} '
                            f'WHERE user_id={user_id}')
             connect.commit()
@@ -121,7 +121,7 @@ def give_dange_item(user_id, dange_floor):
                                  '5': 'бутылка с письмом',
                                  '6': 'мяукающий мешок',
                                  '7': 'ящик пандоры'}
-            return treasures_numbers[str(treausre_tier)]
+            return treasures_numbers[str(treausre_tier)].title()
     finally:
         connect.close()
 
