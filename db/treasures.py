@@ -465,11 +465,12 @@ def open_treasure(user_id, treasure_number):
 
                 elif result == 6:
                     user_luck = user_info['luck']
-                    cursor.execute(f'UPDATE users SET luck={user_luck + 10}, money={0}, is_dead={1}, {treasure}={user_treasure} '
+                    new_luck = random.randint(1,10)
+                    cursor.execute(f'UPDATE users SET luck={user_luck + new_luck}, money={0}, is_dead={1}, {treasure}={user_treasure} '
                                    f'WHERE user_id={user_id} ')
                     connect.commit()
                     return 'Вы открыли Ящик Пандоры и из него нахлынул якрий свет. Вы потеряли сознание. ' \
-                           'Очнувшись, вы поняли, что пока вы спали, вас избили и обокрыли...' + '\n' + '+10 удачи'
+                           'Очнувшись, вы поняли, что пока вы спали, вас избили и обокрыли...' + '\n' + f'+{new_luck} удачи'
             
     finally:
         connect.close()
