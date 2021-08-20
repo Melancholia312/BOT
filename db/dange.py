@@ -86,36 +86,42 @@ def give_dange_item(user_id, dange_floor):
             chance = random.randint(1, 100)
             if dange_floor in [5,10]:
                 if chance < 40 + user_luck*2:
-                    item_tier = 2
+                    treausre_tier = 1
                 else:
-                    item_tier = 1
+                    treausre_tier = 2
 
             elif dange_floor == 15:
                 if chance < 70 - user_luck*3:
-                    item_tier = 2
+                    treausre_tier = 4
                 else:
-                    item_tier = 3
+                    treausre_tier = 3
 
             elif dange_floor == 20:
                 if chance < 90-user_luck*2:
-                    item_tier = 3
+                    treausre_tier = 6
                 else:
-                    item_tier = 4
+                    treausre_tier = 7
 
             elif dange_floor == 25:
                 if chance < 50-user_luck*2:
-                    item_tier = 3
+                    treausre_tier = 3
                 else:
-                    item_tier = 4
+                    treausre_tier = 7
 
-            cursor.execute(f"SELECT id, name FROM items "
-                           f"WHERE tier={item_tier}")
-            items = cursor.fetchall()
-            user_item = random.choice(items)
-            cursor.execute(f"INSERT INTO relation_items_users(user_id, item_id) "
-                           f"VALUES ({user_id}, {user_item['id']}) ")
+            treasure = f'treasure_{treausre_tier}'
+            cursor.execute(f'SELECT {treasure} FROM users WHERE user_id={user_id}')
+            treasure_quantity = cursor.fetchone()[treasure] + treasure_quantity
+            cursor.execute(f'UPDATE users SET {treasure}={treasure_quantity} '
+                           f'WHERE user_id={user_id}')
             connect.commit()
-            return user_item['name']
+            treasures_numbers = {'1': 'дорожный сундук',
+                                 '2': 'зачарованный сундук',
+                                 '3': 'аукционный сундук',
+                                 '4': 'потерянная шкатулка',
+                                 '5': 'бутылка с письмом',
+                                 '6': 'мяукающий мешок',
+                                 '7': 'ящик пандоры'}
+            return treasures_numbers[str(treausre_tier)]
     finally:
         connect.close()
 
