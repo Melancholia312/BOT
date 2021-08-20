@@ -345,7 +345,8 @@ def open_treasure(user_id, treasure_number):
                     user_item = random.choice(items)
                     cursor.execute(f"INSERT INTO relation_items_users(user_id, item_id) "
                                    f"VALUES ({user_id}, {user_item['id']}) ")
-                    cursor.execute(f'UPDATE users SET luck={-1}, '
+                    new_luck = random.randint(5,15)
+                    cursor.execute(f'UPDATE users SET luck={-new_luck}, '
                                    f'{treasure}={user_treasure} '
                                    f'WHERE user_id={user_id}')
                     connect.commit()
