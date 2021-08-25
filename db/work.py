@@ -176,7 +176,7 @@ def worker(user_id):
             chance = random.randint(1, 100)
 
             if chance < 65 + hero_info['luck']:
-                earn_money = (chance//10) * 3 + 50 + hero_info['strength'] * 2
+                earn_money = (chance//10) * 3 + 50 + hero_info['strength'] * 5
                 cursor.execute(f"UPDATE users SET money={user_money+earn_money}, exp={hero_info['exp']+2} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -184,7 +184,7 @@ def worker(user_id):
 
             elif chance < 85 - hero_info['luck']:
                 lost_thing = ['лопату', 'молоток', 'зубило', 'ведро', 'топор', 'совесть']
-                lost_money = chance % 10 * 2 + 10
+                lost_money = chance % 10 * 3 + 10
                 cursor.execute(f"UPDATE users SET money={user_money - lost_money}, exp={hero_info['exp'] + 4} "
                                    f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -215,14 +215,14 @@ def translator(user_id):
             user_money = hero_info['money']
 
             if chance < 60 + hero_info['luck']:
-                earn_money = hero_info['intellect'] * 3 + 40 + chance//10 * 2
+                earn_money = hero_info['intellect'] * 5 + 40 + chance//10 * 2
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 2} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
                 return '💰Хорошая работа. Вот ваши деньги.' + '\n' + f'+{earn_money} Крон' + '\n' + '+2 опыта'
 
             elif chance < 75 + hero_info['luck']:
-                earn_money = hero_info['intellect'] * 2 + 30 + chance//10
+                earn_money = hero_info['intellect'] * 3 + 30 + chance//10
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 3} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -251,7 +251,7 @@ def courier(user_id):
             user_money = hero_info['money']
 
             if chance < 65 + hero_info['luck']:
-                earn_money = hero_info['agility'] * 3 + 30 + chance // 10 * 2
+                earn_money = hero_info['agility'] * 5 + 30 + chance // 10 * 2
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 2} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -292,7 +292,7 @@ def blacksmith(user_id):
                 crafted_weapon = ['меч', 'алебарда', 'кираса', 'топор', 'лопата', 'нож']
                 weapon_sex = {'меч': 1, 'алебарда': 0, 'кираса': 0, 'топор': 1, 'лопата': 0, 'нож': 1}
                 random_weapon = random.choice(crafted_weapon)
-                earn_money = hero_info['intellect'] * 2 + hero_info['strength'] * 3 + chance // 10 * 2
+                earn_money = hero_info['intellect'] * 3 + hero_info['strength'] * 4 + chance // 10 * 2
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 2} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -302,7 +302,7 @@ def blacksmith(user_id):
                     return f'💰Отличный вышел {random_weapon}. Кузнец доволен твоей работой.' + '\n' + f'+{earn_money} Крон' + '\n' + '+2 опыта'
 
             elif chance < 70 + hero_info['luck']:
-                earn_money = hero_info['strength'] * 2 + hero_info['intellect'] + chance // 10
+                earn_money = hero_info['strength'] * 3 + hero_info['intellect'] + chance // 10
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 3} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -335,7 +335,7 @@ def tailor(user_id):
             user_money = hero_info['money']
 
             if chance < 65 + hero_info['luck']:
-                earn_money = hero_info['agility'] * 2 + hero_info['intellect'] * 3 + chance // 10 * 2
+                earn_money = hero_info['agility'] * 3 + hero_info['intellect'] * 4 + chance // 10 * 2
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 2} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
@@ -374,7 +374,7 @@ def woodcutter(user_id):
             user_money = hero_info['money']
 
             if chance < 65 + hero_info['luck']:
-                earn_money = hero_info['agility'] * 3 + hero_info['strength'] * 2 + 40 + chance // 10 * 2
+                earn_money = hero_info['agility'] * 4 + hero_info['strength'] * 3 + 40 + chance // 10 * 2
                 cursor.execute(f"UPDATE users SET money={user_money + earn_money}, exp={hero_info['exp'] + 2} "
                                f"WHERE user_id={user_id} ")
                 connect.commit()
