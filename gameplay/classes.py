@@ -184,9 +184,13 @@ class Knight(Character):
 
     def round_attack(self, all_enemies):
         for enemy in all_enemies:
-            enemy.health -= int(self.attack / 4 * 3)
+            calc_damage = int(self.attack / 5 * 3)-enemy.armour * 2
+            if calc_damage < 0:
+                calc_damage = 0
+            enemy.health -= calc_damage
         self.mana -= self.cast_cost
-        return self.name + " использует круговую атаку! \n -" + str(self.cast_cost) + "🔷" + "\n"
+        return self.name + " использует круговую атаку! \n" + \
+               str(calc_damage)+"🗡 "+str(self.cast_cost) + "🔷" + "\n"
 
     def the_will_for_life(self):
         if self.health < self.max_health / 100 * 30:
@@ -194,7 +198,7 @@ class Knight(Character):
             self.armour_safe = 0
 
     def __init__(self):
-        self.cast_cost = 25
+        self.cast_cost = 35
         self.active_ability = lambda one, e, f: self.round_attack(e)
         self.passive_ability = lambda: self.the_will_for_life()
 
@@ -258,7 +262,7 @@ class Graduate(Character):
         spell_damage = (self.intelligence + self.lvl) * 4
         for enemy in all_enemies:
             enemy.health -= spell_damage
-            enemy.armour //= 2
+            enemy.armour //= 3
         self.mana -= self.cast_cost
         self.mana_used = self.cast_cost
         # self.health += 30 +(+ self.multiply_intellect_atk * self.lvl)//2
@@ -387,7 +391,7 @@ class Strelok(Character):
 class Sniper(Character):
 
     def accurate_shot(self, enemy):
-        damage = int(enemy.max_health / 100 * 30)
+        damage = int(enemy.max_health / 100 * 15)
         enemy.health -= damage
         self.mana -= self.cast_cost
         return self.name + " использует точный выстрел! \n" + \
