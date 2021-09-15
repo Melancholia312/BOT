@@ -383,7 +383,7 @@ def user_register(msg, user_id):
                         send_message(inviter_id, f'За приглашение 14 рефералов вы получили Потерянную шкатулку!')
                     elif count_referals(inviter_id) == 24:
                         give_treasure(inviter_id, 3)
-                        send_message(inviter_id, f'За приглашение 3 рефералов вы получили Аукционный сундук!')
+                        send_message(inviter_id, f'За приглашение 24 рефералов вы получили Аукционный сундук!')
 
                 else:
                     send_message(user_id, "Вы уже вводили код приглашения")
