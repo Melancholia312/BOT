@@ -32,7 +32,7 @@ from gameplay.monsters import *
 from gameplay.classes import *
 
 
-vk = vk_api.VkApi(token="")
+vk = vk_api.VkApi(token="4877fc122ae301054834a68b7dc0a06c544bc4ffffa7ce09c65d884c2b4c466aa993086873b043b4f0964")
 vk._auth_token()
 vk.get_api()
 group_id = 203434371
